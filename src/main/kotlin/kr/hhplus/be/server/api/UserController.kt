@@ -42,7 +42,8 @@ class UserController {
     require(userId == 1L) { "유저가 존재하지 않습니다." }
 
     check(couponId > 0L) { "쿠폰 id는 양수입니다." }
-    require(couponId == 1L) { "쿠폰이 존재하지 않습니다." }
+    require(couponId <= 2L) { "쿠폰이 존재하지 않습니다." }
+    check(couponId == 1L) { "쿠폰의 재고가 없습니다." }
 
     return userCoupon
   }
@@ -58,6 +59,7 @@ class UserController {
   fun chargePoint(@PathVariable userId: Long, @RequestBody request: PointChargeRequest): User {
     check(userId > 0L) { "유저 id는 양수입니다." }
     require(userId == 1L) { "존재하지 않습니다." }
+    check(user.point < 1_000_000_000 - request.point) { "충전 가능 최대 금액은 1,000,000,000 원 입니다." }
     user.point += request.point
     return user
   }
