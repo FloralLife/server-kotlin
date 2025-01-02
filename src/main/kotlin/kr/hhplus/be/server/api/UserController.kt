@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 class UserController {
   class User(
     val id: Long,
@@ -31,32 +31,32 @@ class UserController {
 
   @GetMapping("/{userId}")
   fun get(@PathVariable userId: Long): User {
-    require(userId > 0L) { "유저 id는 양수입니다." }
+    check(userId > 0L) { "유저 id는 양수입니다." }
     require(userId == 1L) { "존재하지 않습니다." }
     return user
   }
 
   @PostMapping("/{userId}/coupons/{couponId}")
   fun registerCoupon(@PathVariable userId: Long, @PathVariable couponId: Long): UserCoupon {
-    require(userId > 0L) { "유저 id는 양수입니다." }
-    require(userId == 1L) { "존재하지 않습니다." }
+    check(userId > 0L) { "유저 id는 양수입니다." }
+    require(userId == 1L) { "유저가 존재하지 않습니다." }
 
-    require(couponId > 0L) { "쿠폰 id는 양수입니다." }
-    require(couponId == 1L) { "존재하지 않습니다." }
+    check(couponId > 0L) { "쿠폰 id는 양수입니다." }
+    require(couponId == 1L) { "쿠폰이 존재하지 않습니다." }
 
     return userCoupon
   }
 
   @GetMapping("/{userId}/point")
   fun getPoint(@PathVariable userId: Long): Int {
-    require(userId > 0L) { "유저 id는 양수입니다." }
+    check(userId > 0L) { "유저 id는 양수입니다." }
     require(userId == 1L) { "존재하지 않습니다." }
     return user.point
   }
 
   @PutMapping("/{userId}/point")
   fun chargePoint(@PathVariable userId: Long, @RequestBody request: PointChargeRequest): User {
-    require(userId > 0L) { "유저 id는 양수입니다." }
+    check(userId > 0L) { "유저 id는 양수입니다." }
     require(userId == 1L) { "존재하지 않습니다." }
     user.point += request.point
     return user

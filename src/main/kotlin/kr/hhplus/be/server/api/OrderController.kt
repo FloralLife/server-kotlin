@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 import kotlin.random.Random
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/orders")
 class OrderController {
   class Order(
     val id: Long,
@@ -32,15 +32,15 @@ class OrderController {
   )
 
   val user: User = User(1L, 50_000_000)
-  val product = Product(1L, "맥북", 5, 2_000_000, LocalDateTime.now())
+  val product = Product(1L, "맥북", 50, 2_000_000, LocalDateTime.now())
 
   @PostMapping
   fun order(@RequestBody request: OrderCreateRequest): Order {
-    require(request.userId > 0L) { "유저 id는 양수입니다." }
+    check(request.userId > 0L) { "유저 id는 양수입니다." }
     require(request.userId == 1L) { "유저가 존재하지 않습니다." }
 
     if (request.userCouponId != null) {
-      require(request.userCouponId > 0L) { "유저 쿠폰 id는 양수입니다." }
+      check(request.userCouponId > 0L) { "유저 쿠폰 id는 양수입니다." }
       require(request.userCouponId <= 2L) { "유저 쿠폰이 존재하지 않습니다." }
       check(request.userCouponId == 1L) { "만료된 쿠폰입니다." }
     }
@@ -48,9 +48,9 @@ class OrderController {
     var totalPrice = 0;
 
     request.products.forEach {
-      require(it.productId > 0L) { "상품 id는 양수입니다." }
+      check(it.productId > 0L) { "상품 id는 양수입니다." }
       require(it.productId == 1L) { "상품이 존재하지 않습니다." }
-      require(product.stock >= it.amount) { "상품의 재고가 부족합니다." }
+      check(product.stock >= it.amount) { "상품의 재고가 부족합니다." }
       totalPrice += it.amount * product.price
     }
 
