@@ -26,4 +26,15 @@ class ProductController {
     require(productId == 1L) { "존재하지 않습니다." }
     return product
   }
+
+  @GetMapping("/top")
+  fun getTop() : List<Product> {
+    return listOf(
+      Product(1L, "맥북 m1", 5, 2_000_000, LocalDateTime.now()),
+      Product(2L, "맥북 m2", 2, 2_000_000, LocalDateTime.now()),
+      Product(3L, "맥북 m3", 4, 2_000_000, LocalDateTime.now()),
+      Product(4L, "맥북 m4", 7, 2_000_000, LocalDateTime.now()),
+      Product(5L, "맥북 m5", 4, 2_000_000, LocalDateTime.now())
+    )
+  }
 }
