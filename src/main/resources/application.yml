@@ -3,6 +3,8 @@ spring:
     name: hhplus
   profiles:
     active: local
+  config.import:
+    - application-swagger.yml
   datasource:
     name: HangHaePlusDataSource
     type: com.zaxxer.hikari.HikariDataSource
