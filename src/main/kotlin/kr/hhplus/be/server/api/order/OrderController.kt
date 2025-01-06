@@ -1,8 +1,8 @@
-package kr.hhplus.be.server.api
+package kr.hhplus.be.server.api.order
 
-import kr.hhplus.be.server.api.ProductController.Product
-import kr.hhplus.be.server.api.UserController.User
-import kr.hhplus.be.server.api.request.OrderCreateRequest
+import kr.hhplus.be.server.api.product.ProductController.Product
+import kr.hhplus.be.server.api.customer.CustomerController.Customer
+import kr.hhplus.be.server.api.order.request.OrderCreateRequest
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,10 +17,10 @@ class OrderController {
     val id: Long,
     val status: String,
     val products: List<OrderProduct>,
-    val userId: Long,
+    val customerId: Long,
     val address: String,
     val totalPrice: Int,
-    val userCouponId: Long?,
+    val customerCouponId: Long?,
     val discountPrice: Int?,
   )
 
@@ -31,18 +31,18 @@ class OrderController {
     val amount: Int
   )
 
-  val user: User = User(1L, 50_000_000)
+  val customer: Customer = Customer(1L, 50_000_000)
   val product = Product(1L, "맥북", 50, 2_000_000, LocalDateTime.now())
 
   @PostMapping
   fun order(@RequestBody request: OrderCreateRequest): Order {
-    check(request.userId > 0L) { "유저 id는 양수입니다." }
-    require(request.userId == 1L) { "유저가 존재하지 않습니다." }
+    check(request.customerId > 0L) { "유저 id는 양수입니다." }
+    require(request.customerId == 1L) { "유저가 존재하지 않습니다." }
 
-    if (request.userCouponId != null) {
-      check(request.userCouponId > 0L) { "유저 쿠폰 id는 양수입니다." }
-      require(request.userCouponId <= 2L) { "유저 쿠폰이 존재하지 않습니다." }
-      check(request.userCouponId == 1L) { "만료된 쿠폰입니다." }
+    if (request.customerCouponId != null) {
+      check(request.customerCouponId > 0L) { "유저 쿠폰 id는 양수입니다." }
+      require(request.customerCouponId <= 2L) { "유저 쿠폰이 존재하지 않습니다." }
+      check(request.customerCouponId == 1L) { "만료된 쿠폰입니다." }
     }
 
     var totalPrice = 0;
@@ -55,22 +55,22 @@ class OrderController {
     }
 
     var discountPrice = 0;
-    if (request.userCouponId != null) {
+    if (request.customerCouponId != null) {
       discountPrice = (totalPrice * 0.01).toInt()
       totalPrice = (totalPrice * 0.99).toInt()
     }
 
-    check(totalPrice <= user.point) { "포인트가 부족합니다" }
+    check(totalPrice <= customer.point) { "포인트가 부족합니다" }
 
     val products = request.products.map { OrderProduct(Random.nextLong(0L, 1_000_000L), it.productId, 1L, 5) }
     return Order(
       1L,
       "PRODUCT_PREPARING",
       products,
-      request.userId,
+      request.customerId,
       request.address,
       totalPrice,
-      request.userCouponId,
+      request.customerCouponId,
       discountPrice
     )
   }

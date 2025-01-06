@@ -1,10 +1,10 @@
-package kr.hhplus.be.server.api.request
+package kr.hhplus.be.server.api.order.request
 
 data class OrderCreateRequest(
   val address: String,
   val products: List<OrderProductRequest>,
-  val userId: Long,
-  val userCouponId: Long? = null
+  val customerId: Long,
+  val customerCouponId: Long? = null
 )
 
 data class OrderProductRequest(

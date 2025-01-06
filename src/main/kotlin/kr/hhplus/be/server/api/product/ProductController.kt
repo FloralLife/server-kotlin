@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.api
+package kr.hhplus.be.server.api.product
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
