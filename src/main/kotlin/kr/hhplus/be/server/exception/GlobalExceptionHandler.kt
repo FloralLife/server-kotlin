@@ -15,13 +15,24 @@ data class ErrorResponse(val code: String, val message: String)
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
   private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-  @ExceptionHandler(IllegalArgumentException::class)
+  @ExceptionHandler(HhpNotFoundException::class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  fun handleException(e: IllegalArgumentException): ResponseEntity<ErrorResponse> {
+  fun handleNotFound(e: HhpNotFoundException): ResponseEntity<ErrorResponse> {
     logger.info(e.message)
     return ResponseEntity(
       ErrorResponse("404", "${e.message}"),
       HttpStatus.NOT_FOUND,
+    )
+  }
+
+
+  @ExceptionHandler(IllegalArgumentException::class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  fun handleException(e: IllegalArgumentException): ResponseEntity<ErrorResponse> {
+    logger.info(e.message)
+    return ResponseEntity(
+      ErrorResponse("400", "${e.message}"),
+      HttpStatus.BAD_REQUEST,
     )
   }
 
