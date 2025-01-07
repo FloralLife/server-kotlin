@@ -1,4 +1,23 @@
 package kr.hhplus.be.server.domain.product
 
-class ProductService {
+import kr.hhplus.be.server.exception.HhpNotFoundException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
+
+@Service
+class ProductService(
+  val productRepository: ProductRepository,
+) {
+  fun get(id: Long): Product {
+    return productRepository.findById(id) ?: throw HhpNotFoundException(id, Product::class.java)
+  }
+
+  fun getAll(pageable: Pageable): Page<Product> {
+    return productRepository.findAll(pageable)
+  }
+
+  fun getAll(ids: List<Long>): List<Product> {
+    return productRepository.findAllForUpdateByIds(ids)
+  }
 }

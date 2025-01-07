@@ -12,4 +12,14 @@ class Product(
   var stock: Int,
 
   var price: Int,
-) : BaseEntity()
+) : BaseEntity() {
+  init {
+    require(stock >= 0) { "Stock must not be negative." }
+    require(price >= 0) { "Price must not be negative." }
+  }
+
+  fun purchase(amount: Int) {
+    check(amount <= stock) { "Cannot purchase more than stock. stock : $stock" }
+    stock -= amount
+  }
+}
