@@ -1,4 +1,19 @@
 package kr.hhplus.be.server.infra.coupon
 
-class CouponRepositoryImpl {
+import kr.hhplus.be.server.domain.coupon.Coupon
+import kr.hhplus.be.server.domain.coupon.CouponRepository
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Repository
+
+@Repository
+class CouponRepositoryImpl (
+   private val jpaCouponRepository: JpaCouponRepository
+) : CouponRepository {
+  override fun findById(id: Long): Coupon? {
+    return jpaCouponRepository.findByIdOrNull(id)
+  }
+
+  override fun findForUpdateById(id: Long): Coupon? {
+    return jpaCouponRepository.findForUpdateById(id)
+  }
 }
