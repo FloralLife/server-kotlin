@@ -32,4 +32,15 @@ class CustomerCoupon(
 
   var usedAt: LocalDateTime?,
 ) {
+  fun isExpired(): Boolean {
+    return status == CustomerCouponStatus.UNUSED && expirationDate.isBefore(LocalDate.now())
+  }
+
+  fun use() {
+    require(status == CustomerCouponStatus.UNUSED) { "This CustomerCoupon is already used" }
+    require(isExpired()) { "This CustomerCoupon is expired" }
+
+    status = CustomerCouponStatus.USED
+    usedAt = LocalDateTime.now()
+  }
 }

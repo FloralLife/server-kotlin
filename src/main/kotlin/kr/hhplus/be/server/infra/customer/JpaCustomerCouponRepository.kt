@@ -1,4 +1,6 @@
 package kr.hhplus.be.server.infra.customer
 
-class JpaCustomerCouponRepository {
-}
+import kr.hhplus.be.server.domain.customer.CustomerCoupon
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface JpaCustomerCouponRepository : JpaRepository<CustomerCoupon, Long?> {}
