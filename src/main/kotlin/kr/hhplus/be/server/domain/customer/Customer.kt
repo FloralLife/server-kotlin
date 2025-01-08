@@ -12,6 +12,23 @@ class Customer(
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Long = 0L,
 
-  val point: Int
+  var point: Int = 0
 ) {
+  companion object {
+    const val MAX_POINT = 1_000_000_000
+  }
+
+  init {
+    require(point >= 0) { "Point must not be negative" }
+  }
+
+  fun usePoint(amount: Int) {
+    require(amount <= point) { "Cannot use more than balance. balance : $point" }
+    point -= amount
+  }
+
+  fun chargePoint(amount: Int) {
+    require(amount <= MAX_POINT - point) { "Cannot charge more than $MAX_POINT" }
+    point += amount
+  }
 }
