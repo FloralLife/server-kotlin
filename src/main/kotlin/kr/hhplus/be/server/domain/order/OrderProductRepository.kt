@@ -7,4 +7,6 @@ interface OrderProductRepository {
   fun findByOrderId(orderId: Long, pageable: Pageable): Page<OrderProduct>
 
   fun saveAll(orderProducts: List<OrderProduct>): List<OrderProduct>
+
+  fun findTop5MostPurchasedProductsInLast3Days(): List<Long>
 }

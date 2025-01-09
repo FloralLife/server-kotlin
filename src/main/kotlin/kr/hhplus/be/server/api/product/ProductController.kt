@@ -3,6 +3,7 @@ package kr.hhplus.be.server.api.product
 import kr.hhplus.be.server.api.product.request.CreateProductRequest
 import kr.hhplus.be.server.api.product.response.ProductResponse
 import kr.hhplus.be.server.api.product.response.toResponse
+import kr.hhplus.be.server.application.product.ProductUseCase
 import kr.hhplus.be.server.domain.product.Product
 import kr.hhplus.be.server.domain.product.ProductService
 import kr.hhplus.be.server.domain.product.command.toCommand
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/products")
 class ProductController(
-  private val productService: ProductService
+  private val productService: ProductService,
+  private val productUseCase: ProductUseCase
 ) {
   @GetMapping("/{productId}")
   fun get(@PathVariable productId: Long): ProductResponse {
@@ -36,7 +38,7 @@ class ProductController(
   }
 
   @GetMapping("/top")
-  fun getTop() : List<Product> {
-    TODO()
+  fun getTop() : List<ProductResponse> {
+    return productUseCase.top5For3Days().map { it.toResponse() }
   }
 }

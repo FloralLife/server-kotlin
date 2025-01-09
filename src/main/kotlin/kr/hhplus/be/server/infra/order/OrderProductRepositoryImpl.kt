@@ -5,6 +5,7 @@ import kr.hhplus.be.server.domain.order.OrderProductRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 class OrderProductRepositoryImpl(
@@ -16,5 +17,11 @@ class OrderProductRepositoryImpl(
 
   override fun saveAll(orderProducts: List<OrderProduct>): List<OrderProduct> {
     return jpaOrderProductRepository.saveAll(orderProducts)
+  }
+
+  override fun findTop5MostPurchasedProductsInLast3Days(): List<Long> {
+    return jpaOrderProductRepository.findTop5MostPurchasedProductsInLast3Days(
+      startDate = LocalDateTime.now().minusDays(3)
+    )
   }
 }
