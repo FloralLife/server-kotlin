@@ -14,7 +14,7 @@ import kr.hhplus.be.server.domain.product.Product
 @Table(name = "order_product")
 class OrderProduct(
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  val id: Long,
+  val id: Long = 0L,
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id", nullable = false)
