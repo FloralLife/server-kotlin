@@ -14,9 +14,6 @@ import java.time.LocalDateTime
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  val id: Long = 0L
-
   @CreatedDate
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
   val createdAt: LocalDateTime = LocalDateTime.now()

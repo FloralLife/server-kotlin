@@ -19,6 +19,9 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "order")
 class Order(
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  val id: Long = 0L,
+
   var status: OrderStatus = OrderStatus.PAYMENT_WAITING,
 
   val address: String,

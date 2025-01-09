@@ -1,12 +1,18 @@
 package kr.hhplus.be.server.domain.product
 
 import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
 import jakarta.persistence.Table
 import kr.hhplus.be.server.domain.BaseEntity
 
 @Entity
 @Table(name = "product")
 class Product(
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  val id: Long = 0L,
+
   val name: String,
 
   var stock: Int,
