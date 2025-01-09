@@ -13,18 +13,13 @@ import kr.hhplus.be.server.domain.product.Product
 @Entity
 @Table(name = "order_product")
 class OrderProduct(
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  val id: Long = 0L,
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id", nullable = false)
-  val product: Product,
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "order_id", nullable = false)
-  val order: Order,
-
-  val amount: Int
-) {
-
-}
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    val product: Product,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    val order: Order,
+    val amount: Int,
+)

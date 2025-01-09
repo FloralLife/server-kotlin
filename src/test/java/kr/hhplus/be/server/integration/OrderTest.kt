@@ -20,42 +20,43 @@ import org.springframework.test.web.servlet.post
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class OrderTest @Autowired constructor(
-  val jpaCustomerRepository: JpaCustomerRepository,
-  val jpaOrderProductRepository: JpaOrderProductRepository,
-  val jpaCustomerCouponRepository: JpaCustomerCouponRepository,
-  var jpaCouponRepository: JpaCouponRepository,
-  val jpaProductRepository: JpaProductRepository,
-  val jpaOrderRepository: JpaOrderRepository,
-  val mockMvc: MockMvc
-) {
+class OrderTest
+    @Autowired
+    constructor(
+        val jpaCustomerRepository: JpaCustomerRepository,
+        val jpaOrderProductRepository: JpaOrderProductRepository,
+        val jpaCustomerCouponRepository: JpaCustomerCouponRepository,
+        var jpaCouponRepository: JpaCouponRepository,
+        val jpaProductRepository: JpaProductRepository,
+        val jpaOrderRepository: JpaOrderRepository,
+        val mockMvc: MockMvc,
+    ) {
+        @AfterEach
+        fun cleanup() {
+            jpaOrderProductRepository.deleteAll()
+            jpaCustomerCouponRepository.deleteAll()
+            jpaOrderRepository.deleteAll()
+            jpaCustomerRepository.deleteAll()
+            jpaCouponRepository.deleteAll()
+            jpaProductRepository.deleteAll()
+        }
 
-  @AfterEach
-  fun cleanup() {
-    jpaOrderProductRepository.deleteAll()
-    jpaCustomerCouponRepository.deleteAll()
-    jpaOrderRepository.deleteAll()
-    jpaCustomerRepository.deleteAll()
-    jpaCouponRepository.deleteAll()
-    jpaProductRepository.deleteAll()
-  }
+        @Test
+        fun cannotOrderMoreThanStock() {
+            val customers = List(20) { index -> Customer(0) }
+            jpaCustomerRepository.saveAll(customers)
 
-  @Test
-  fun cannotOrderMoreThanStock() {
-    val customers = List(20) { index -> Customer(0) }
-    jpaCustomerRepository.saveAll(customers)
+            val product = Product(0L, "A", 10, 10_000)
+            jpaProductRepository.save(product)
 
-    val product = Product(0L, "A", 10, 10_000)
-    jpaProductRepository.save(product)
+            customers.parallelStream().forEach {
+                mockMvc.post("/api/orders") {
+                    contentType = MediaType.APPLICATION_JSON
+                    content =
+                        "{ \"address\": \"zep\", \"customerId\": ${it.id}, \"products\": [{ \"productId\": 1, \"amount\": 1 }]}"
+                }
+            }
 
-    customers.parallelStream().forEach {
-      mockMvc.post("/api/orders") {
-        contentType = MediaType.APPLICATION_JSON
-        content =
-          "{ \"address\": \"zep\", \"customerId\": ${it.id}, \"products\": [{ \"productId\": 1, \"amount\": 1 }]}"
-      }
+            assertEquals(10, jpaOrderProductRepository.findAll().size)
+        }
     }
-
-    assertEquals(10, jpaOrderProductRepository.findAll().size)
-  }
-}

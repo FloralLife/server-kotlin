@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/payments")
 class PaymentController(
-  private val paymentService: PaymentService,
-  private val paymentUseCase: PaymentUseCase
+    private val paymentService: PaymentService,
+    private val paymentUseCase: PaymentUseCase,
 ) {
-  @GetMapping("/{paymentId}")
-  fun get(@PathVariable paymentId: Long): PaymentResponse {
-    return paymentService.getResult(paymentId).toResponse()
-  }
+    @GetMapping("/{paymentId}")
+    fun get(
+        @PathVariable paymentId: Long,
+    ): PaymentResponse = paymentService.getResult(paymentId).toResponse()
 
-  @PostMapping
-  fun purchase(@RequestBody request: PayRequest): PaymentResponse {
-    return paymentUseCase.pay(request.customerId, request.orderId).toResponse()
-  }
+    @PostMapping
+    fun purchase(
+        @RequestBody request: PayRequest,
+    ): PaymentResponse = paymentUseCase.pay(request.customerId, request.orderId).toResponse()
 }

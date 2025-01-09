@@ -6,31 +6,31 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CustomerService(
-  private val customerRepository: CustomerRepository
+    private val customerRepository: CustomerRepository,
 ) {
-  fun get(id: Long): Customer {
-    return customerRepository.findById(id) ?: throw HhpNotFoundException(id, Customer::class.java)
-  }
+    fun get(id: Long): Customer = customerRepository.findById(id) ?: throw HhpNotFoundException(id, Customer::class.java)
 
-  fun getWithLock(id: Long): Customer {
-    return customerRepository.findForUpdateById(id) ?: throw HhpNotFoundException(id, Customer::class.java)
-  }
+    fun getWithLock(id: Long): Customer = customerRepository.findForUpdateById(id) ?: throw HhpNotFoundException(id, Customer::class.java)
 
-  fun create(): Customer {
-    return customerRepository.save(Customer())
-  }
+    fun create(): Customer = customerRepository.save(Customer())
 
-  @Transactional
-  fun chargePoint(id: Long, amount: Int): Customer {
-    val customer = getWithLock(id)
-    customer.chargePoint(amount)
-    return customer
-  }
+    @Transactional
+    fun chargePoint(
+        id: Long,
+        amount: Int,
+    ): Customer {
+        val customer = getWithLock(id)
+        customer.chargePoint(amount)
+        return customer
+    }
 
-  @Transactional
-  fun usePoint(id: Long, amount: Int): Customer {
-    val customer = getWithLock(id)
-    customer.usePoint(amount)
-    return customer
-  }
+    @Transactional
+    fun usePoint(
+        id: Long,
+        amount: Int,
+    ): Customer {
+        val customer = getWithLock(id)
+        customer.usePoint(amount)
+        return customer
+    }
 }

@@ -16,35 +16,35 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
-class CustomerCouponTest @Autowired constructor(
-  val jpaCustomerCouponRepository: JpaCustomerCouponRepository,
-  val jpaCouponRepository: JpaCouponRepository,
-  val jpaCustomerRepository: JpaCustomerRepository,
-  val mockMvc: MockMvc
-) {
-  @BeforeEach
-  fun setUp() {
-    val coupon: Coupon = Coupon( 0L, "선착순 쿠폰", 10, 10, 30)
-    jpaCouponRepository.save(coupon)
-  }
+class CustomerCouponTest
+    @Autowired
+    constructor(
+        val jpaCustomerCouponRepository: JpaCustomerCouponRepository,
+        val jpaCouponRepository: JpaCouponRepository,
+        val jpaCustomerRepository: JpaCustomerRepository,
+        val mockMvc: MockMvc,
+    ) {
+        @BeforeEach
+        fun setUp() {
+            val coupon: Coupon = Coupon(0L, "선착순 쿠폰", 10, 10, 30)
+            jpaCouponRepository.save(coupon)
+        }
 
-  @Test
-  @DisplayName("동시에 다수의 사람이 쿠폰을 발급받아도 정해진 재고만큼 발급된다.")
-  fun issueCustomerCoupon() {
-    val users = List(20) { index -> Customer( 0) }
-    jpaCustomerRepository.saveAll(users)
+        @Test
+        @DisplayName("동시에 다수의 사람이 쿠폰을 발급받아도 정해진 재고만큼 발급된다.")
+        fun issueCustomerCoupon() {
+            val users = List(20) { index -> Customer(0) }
+            jpaCustomerRepository.saveAll(users)
 
+            users.parallelStream().forEach {
+                mockMvc.post("/api/customers/${it.id}/coupons") {
+                    contentType = MediaType.APPLICATION_JSON
+                    content = "{ \"couponId\": 1 }"
+                }
+            }
 
-    users.parallelStream().forEach {
-      mockMvc.post("/api/customers/${it.id}/coupons") {
-        contentType = MediaType.APPLICATION_JSON
-        content = "{ \"couponId\": 1 }"
-      }
+            assertEquals(10, jpaCustomerCouponRepository.findAll().filter { it.coupon.id == 1L }.size)
+        }
     }
-
-    assertEquals(10, jpaCustomerCouponRepository.findAll().filter { it.coupon.id == 1L }.size)
-  }
-}

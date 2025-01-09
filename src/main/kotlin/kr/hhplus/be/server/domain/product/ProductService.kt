@@ -8,31 +8,22 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductService(
-  val productRepository: ProductRepository,
+    val productRepository: ProductRepository,
 ) {
-  fun get(id: Long): Product {
-    return productRepository.findById(id) ?: throw HhpNotFoundException(id, Product::class.java)
-  }
+    fun get(id: Long): Product = productRepository.findById(id) ?: throw HhpNotFoundException(id, Product::class.java)
 
-  fun getAll(pageable: Pageable): Page<Product> {
-    return productRepository.findAll(pageable)
-  }
+    fun getAll(pageable: Pageable): Page<Product> = productRepository.findAll(pageable)
 
-  fun getAllWithLock(ids: List<Long>): List<Product> {
-    return productRepository.findAllForUpdateByIds(ids)
-  }
+    fun getAllWithLock(ids: List<Long>): List<Product> = productRepository.findAllForUpdateByIds(ids)
 
-  fun getAll(ids: List<Long>): List<Product> {
-    return productRepository.findAllByIds(ids)
-  }
+    fun getAll(ids: List<Long>): List<Product> = productRepository.findAllByIds(ids)
 
-  fun create(command: CreateProductCommand): Product {
-    return productRepository.save(
-      Product(
-        name = command.name,
-        price = command.price,
-        stock = command.stock,
-      )
-    )
-  }
+    fun create(command: CreateProductCommand): Product =
+        productRepository.save(
+            Product(
+                name = command.name,
+                price = command.price,
+                stock = command.stock,
+            ),
+        )
 }

@@ -7,17 +7,11 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class CustomerCouponRepositoryImpl(
-  private val jpaCustomerCouponRepository: JpaCustomerCouponRepository
+    private val jpaCustomerCouponRepository: JpaCustomerCouponRepository,
 ) : CustomerCouponRepository {
-  override fun findById(id: Long): CustomerCoupon? {
-    return jpaCustomerCouponRepository.findByIdOrNull(id)
-  }
+    override fun findById(id: Long): CustomerCoupon? = jpaCustomerCouponRepository.findByIdOrNull(id)
 
-  override fun findAllByCustomerId(customerId: Long): List<CustomerCoupon> {
-    return jpaCustomerCouponRepository.findAllByCustomerId(customerId)
-  }
+    override fun findAllByCustomerId(customerId: Long): List<CustomerCoupon> = jpaCustomerCouponRepository.findAllByCustomerId(customerId)
 
-  override fun save(customerCoupon: CustomerCoupon): CustomerCoupon {
-    return jpaCustomerCouponRepository.save(customerCoupon)
-  }
+    override fun save(customerCoupon: CustomerCoupon): CustomerCoupon = jpaCustomerCouponRepository.save(customerCoupon)
 }

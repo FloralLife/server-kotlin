@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/orders")
 class OrderController(
-  private val orderUseCase: OrderUseCase,
-  private val orderService: OrderService,
+    private val orderUseCase: OrderUseCase,
+    private val orderService: OrderService,
 ) {
-  @GetMapping("/{orderId}")
-  fun get(@PathVariable orderId: Long): OrderResponse {
-    return orderService.getResult(orderId).toResponse()
-  }
+    @GetMapping("/{orderId}")
+    fun get(
+        @PathVariable orderId: Long,
+    ): OrderResponse = orderService.getResult(orderId).toResponse()
 
-  @PostMapping
-  fun order(@RequestBody request: CreateOrderRequest): OrderResponse {
-    return orderUseCase.order(request.toCommand()).toResponse()
-  }
+    @PostMapping
+    fun order(
+        @RequestBody request: CreateOrderRequest,
+    ): OrderResponse = orderUseCase.order(request.toCommand()).toResponse()
 }

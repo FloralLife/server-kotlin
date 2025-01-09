@@ -9,25 +9,15 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class ProductRepositoryImpl(
-  private val jpaProductRepository: JpaProductRepository
+    private val jpaProductRepository: JpaProductRepository,
 ) : ProductRepository {
-  override fun findAll(pageable: Pageable): Page<Product> {
-    return jpaProductRepository.findAll(pageable)
-  }
+    override fun findAll(pageable: Pageable): Page<Product> = jpaProductRepository.findAll(pageable)
 
-  override fun findById(id: Long): Product? {
-    return jpaProductRepository.findByIdOrNull(id)
-  }
+    override fun findById(id: Long): Product? = jpaProductRepository.findByIdOrNull(id)
 
-  override fun findAllForUpdateByIds(ids: List<Long>): List<Product> {
-    return jpaProductRepository.findAllForUpdateByIdIn(ids)
-  }
+    override fun findAllForUpdateByIds(ids: List<Long>): List<Product> = jpaProductRepository.findAllForUpdateByIdIn(ids)
 
-  override fun findAllByIds(ids: List<Long>): List<Product> {
-    return jpaProductRepository.findAllByIdIn(ids)
-  }
+    override fun findAllByIds(ids: List<Long>): List<Product> = jpaProductRepository.findAllByIdIn(ids)
 
-  override fun save(product: Product): Product {
-    return jpaProductRepository.save(product)
-  }
+    override fun save(product: Product): Product = jpaProductRepository.save(product)
 }

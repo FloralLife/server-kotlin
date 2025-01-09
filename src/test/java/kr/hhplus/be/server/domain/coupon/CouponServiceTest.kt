@@ -14,25 +14,25 @@ import org.mockito.kotlin.whenever
 
 @ExtendWith(MockitoExtension::class)
 class CouponServiceTest {
-  @Mock
-  lateinit var couponRepository: CouponRepository
+    @Mock
+    lateinit var couponRepository: CouponRepository
 
-  @InjectMocks
-  lateinit var couponService: CouponService
+    @InjectMocks
+    lateinit var couponService: CouponService
 
-  @Test
-  @DisplayName("존재하지 않는 쿠폰 조회시 NotFoundException")
-  fun getUserThenNotFound() {
-    whenever(couponRepository.findById(anyLong())).thenReturn(null)
+    @Test
+    @DisplayName("존재하지 않는 쿠폰 조회시 NotFoundException")
+    fun getUserThenNotFound() {
+        whenever(couponRepository.findById(anyLong())).thenReturn(null)
 
-    assertThrows(HhpNotFoundException::class.java) { couponService.get(randomId()) }
-  }
+        assertThrows(HhpNotFoundException::class.java) { couponService.get(randomId()) }
+    }
 
-  @Test
-  @DisplayName("존재하지 않는 쿠폰 조회시 NotFoundException")
-  fun getUserWithLockThenNotFound() {
-    whenever(couponRepository.findForUpdateById(anyLong())).thenReturn(null)
+    @Test
+    @DisplayName("존재하지 않는 쿠폰 조회시 NotFoundException")
+    fun getUserWithLockThenNotFound() {
+        whenever(couponRepository.findForUpdateById(anyLong())).thenReturn(null)
 
-    assertThrows(HhpNotFoundException::class.java) { couponService.getWithLock(randomId()) }
-  }
+        assertThrows(HhpNotFoundException::class.java) { couponService.getWithLock(randomId()) }
+    }
 }

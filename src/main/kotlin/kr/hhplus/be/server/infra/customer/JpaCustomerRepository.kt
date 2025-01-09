@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Lock
 
 interface JpaCustomerRepository : JpaRepository<Customer, Long> {
-  @Lock(LockModeType.PESSIMISTIC_WRITE)
-  fun findForUpdateById(id: Long): Customer?
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    fun findForUpdateById(id: Long): Customer?
 }

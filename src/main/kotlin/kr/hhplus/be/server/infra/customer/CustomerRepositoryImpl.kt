@@ -7,13 +7,11 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class CustomerRepositoryImpl(
-  private val jpaCustomerRepository: JpaCustomerRepository
+    private val jpaCustomerRepository: JpaCustomerRepository,
 ) : CustomerRepository {
-  override fun findById(id: Long): Customer? = jpaCustomerRepository.findByIdOrNull(id)
+    override fun findById(id: Long): Customer? = jpaCustomerRepository.findByIdOrNull(id)
 
-  override fun findForUpdateById(id: Long): Customer? = jpaCustomerRepository.findForUpdateById(id)
+    override fun findForUpdateById(id: Long): Customer? = jpaCustomerRepository.findForUpdateById(id)
 
-  override fun save(customer: Customer): Customer {
-    return jpaCustomerRepository.save(customer)
-  }
+    override fun save(customer: Customer): Customer = jpaCustomerRepository.save(customer)
 }

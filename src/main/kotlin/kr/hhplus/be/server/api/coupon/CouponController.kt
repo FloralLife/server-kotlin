@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/coupons")
 class CouponController(
-  val couponService: CouponService
+    val couponService: CouponService,
 ) {
-  @GetMapping("/{couponId}")
-  fun get(@PathVariable couponId: Long): CouponResponse {
-    return couponService.get(couponId).toResponse()
-  }
+    @GetMapping("/{couponId}")
+    fun get(
+        @PathVariable couponId: Long,
+    ): CouponResponse = couponService.get(couponId).toResponse()
 
-  @PostMapping
-  fun create(@RequestBody request: CreateCouponRequest): CouponResponse {
-    return couponService.create(request.toCommand()).toResponse()
-  }
+    @PostMapping
+    fun create(
+        @RequestBody request: CreateCouponRequest,
+    ): CouponResponse = couponService.create(request.toCommand()).toResponse()
 }

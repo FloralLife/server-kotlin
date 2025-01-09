@@ -23,53 +23,56 @@ import java.time.LocalDate
 
 @ExtendWith(MockitoExtension::class)
 class PaymentServiceTest {
-  @Mock
-  lateinit var paymentRepository: PaymentRepository
+    @Mock
+    lateinit var paymentRepository: PaymentRepository
 
-  @InjectMocks
-  lateinit var paymentService: PaymentService
+    @InjectMocks
+    lateinit var paymentService: PaymentService
 
-  val customer: Customer = Customer(1L, 1_000_000)
+    val customer: Customer = Customer(1L, 1_000_000)
 
-  val coupon: Coupon = Coupon(1L, "선착순 쿠폰", 10, 100, 30)
+    val coupon: Coupon = Coupon(1L, "선착순 쿠폰", 10, 100, 30)
 
-  val customerCoupon: CustomerCoupon =
-    CustomerCoupon(1L, customer, coupon, LocalDate.now(), CustomerCouponStatus.UNUSED, null)
+    val customerCoupon: CustomerCoupon =
+        CustomerCoupon(1L, customer, coupon, LocalDate.now(), CustomerCouponStatus.UNUSED, null)
 
-  val order = Order(
-    id = randomId(),
-    address = "zep",
-    customer = customer,
-    customerCoupon = customerCoupon,
-    payment = null,
-    totalPrice = 100_000,
-    discountPrice = 10_000
-  )
+    val order =
+        Order(
+            id = randomId(),
+            address = "zep",
+            customer = customer,
+            customerCoupon = customerCoupon,
+            payment = null,
+            totalPrice = 100_000,
+            discountPrice = 10_000,
+        )
 
-  @Test
-  @DisplayName("존재하지 않는 결제 내역 조회시 NotFoundException")
-  fun getPaymentThenNotFound() {
-    whenever(paymentRepository.findById(anyLong())).thenReturn(null)
+    @Test
+    @DisplayName("존재하지 않는 결제 내역 조회시 NotFoundException")
+    fun getPaymentThenNotFound() {
+        whenever(paymentRepository.findById(anyLong())).thenReturn(null)
 
-    assertThrows(HhpNotFoundException::class.java) { paymentService.get(randomId()) }
-  }
+        assertThrows(HhpNotFoundException::class.java) { paymentService.get(randomId()) }
+    }
 
-  @Test
-  @DisplayName("주문 Id로 조회시 결제 내역이 존재하지 않으면 null 반환")
-  fun getPaymentByOrderIdThenNull() {
-    whenever(paymentRepository.findByOrderId(anyLong())).thenReturn(null)
+    @Test
+    @DisplayName("주문 Id로 조회시 결제 내역이 존재하지 않으면 null 반환")
+    fun getPaymentByOrderIdThenNull() {
+        whenever(paymentRepository.findByOrderId(anyLong())).thenReturn(null)
 
-    assertEquals(null, paymentService.getByOrderId(randomId()))
-  }
+        assertEquals(null, paymentService.getByOrderId(randomId()))
+    }
 
-  @Test
-  @DisplayName("결제 생성 테스트")
-  fun create() {
-    paymentService.create(order)
+    @Test
+    @DisplayName("결제 생성 테스트")
+    fun create() {
+        paymentService.create(order)
 
-    verify(paymentRepository).save(argThat {
-      order.id == this.order.id &&
-          90_000 == this.price
-    })
-  }
+        verify(paymentRepository).save(
+            argThat {
+                order.id == this.order.id &&
+                    90_000 == this.price
+            },
+        )
+    }
 }

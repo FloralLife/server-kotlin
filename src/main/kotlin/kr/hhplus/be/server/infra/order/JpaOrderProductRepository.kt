@@ -10,9 +10,13 @@ import org.springframework.data.repository.query.Param
 import java.time.LocalDateTime
 
 interface JpaOrderProductRepository : JpaRepository<OrderProduct, Long> {
-  fun findAllByOrderId(orderId: Long, pageable: Pageable): Page<OrderProduct>
+    fun findAllByOrderId(
+        orderId: Long,
+        pageable: Pageable,
+    ): Page<OrderProduct>
 
-  @Query("""
+    @Query(
+        """
     SELECT op.product.id
     FROM OrderProduct op
     JOIN op.order o
@@ -21,9 +25,10 @@ interface JpaOrderProductRepository : JpaRepository<OrderProduct, Long> {
       AND pay.createdAt >= :startDate
     GROUP BY op.product.id
     ORDER BY SUM(op.amount) DESC
-  """)
-  fun findTop5MostPurchasedProductsInLast3Days(
-    @Param("paymentStatus") paymentStatus: PaymentStatus = PaymentStatus.COMPLETED,
-    @Param("startDate") startDate: LocalDateTime
-  ): List<Long>
+  """,
+    )
+    fun findTop5MostPurchasedProductsInLast3Days(
+        @Param("paymentStatus") paymentStatus: PaymentStatus = PaymentStatus.COMPLETED,
+        @Param("startDate") startDate: LocalDateTime,
+    ): List<Long>
 }

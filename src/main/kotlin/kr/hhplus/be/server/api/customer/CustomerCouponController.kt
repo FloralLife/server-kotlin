@@ -15,24 +15,23 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/customers/{customerId}/coupons")
 class CustomerCouponController(
-  private val customerUseCase: CustomerUseCase,
-  private val customerCouponService: CustomerCouponService
+    private val customerUseCase: CustomerUseCase,
+    private val customerCouponService: CustomerCouponService,
 ) {
-  @GetMapping
-  fun getAll(@PathVariable customerId: Long): List<CustomerCouponResponse> {
-    return customerCouponService.getAllResult(customerId).map { it.toResponse() }
-  }
+    @GetMapping
+    fun getAll(
+        @PathVariable customerId: Long,
+    ): List<CustomerCouponResponse> = customerCouponService.getAllResult(customerId).map { it.toResponse() }
 
-  @GetMapping("/{customerCouponId}")
-  fun get(@PathVariable customerId: Long, @PathVariable customerCouponId: Long): CustomerCouponResponse {
-    return customerCouponService.getResult(customerCouponId).toResponse()
-  }
+    @GetMapping("/{customerCouponId}")
+    fun get(
+        @PathVariable customerId: Long,
+        @PathVariable customerCouponId: Long,
+    ): CustomerCouponResponse = customerCouponService.getResult(customerCouponId).toResponse()
 
-  @PostMapping
-  fun registerCoupon(
-    @PathVariable customerId: Long,
-    @RequestBody request: CustomerCouponCreateRequest
-  ): CustomerCouponResponse {
-    return customerUseCase.issueCoupon(customerId, request.couponId).toResponse()
-  }
+    @PostMapping
+    fun registerCoupon(
+        @PathVariable customerId: Long,
+        @RequestBody request: CustomerCouponCreateRequest,
+    ): CustomerCouponResponse = customerUseCase.issueCoupon(customerId, request.couponId).toResponse()
 }
