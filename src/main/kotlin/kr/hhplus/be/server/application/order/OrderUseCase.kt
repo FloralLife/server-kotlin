@@ -4,11 +4,11 @@ import kr.hhplus.be.server.application.order.command.CreateOrderUCCommand
 import kr.hhplus.be.server.domain.coupon.CouponService
 import kr.hhplus.be.server.domain.customer.CustomerCouponService
 import kr.hhplus.be.server.domain.customer.CustomerService
-import kr.hhplus.be.server.domain.order.OrderResult
 import kr.hhplus.be.server.domain.order.OrderService
 import kr.hhplus.be.server.domain.order.command.CreateOrderCommand
 import kr.hhplus.be.server.domain.order.command.CreateOrderProductCommand
-import kr.hhplus.be.server.domain.order.toResult
+import kr.hhplus.be.server.domain.order.model.OrderResult
+import kr.hhplus.be.server.domain.order.model.toResult
 import kr.hhplus.be.server.domain.product.ProductService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -23,7 +23,7 @@ class OrderUseCase(
 ) {
   @Transactional
   fun order(command: CreateOrderUCCommand): OrderResult {
-    val customer = customerService.get(command.customerId)
+    val customer = customerService.getWithLock(command.customerId)
 
     val (customerCoupon, discountRate) = command.customerCouponId?.let {
       customerCouponService.get(it).let { coupon ->

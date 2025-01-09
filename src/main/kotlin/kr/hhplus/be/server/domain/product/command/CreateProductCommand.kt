@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.product
+package kr.hhplus.be.server.domain.product.command
 
 import kr.hhplus.be.server.api.product.request.CreateProductRequest
 

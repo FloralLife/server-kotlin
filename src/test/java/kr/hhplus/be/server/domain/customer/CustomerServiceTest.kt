@@ -48,15 +48,15 @@ class CustomerServiceTest {
   @Test
   @DisplayName("존재하지 않는 유저의 포인트를 충전하려고 할 때 NotFoundException 발생")
   fun chargePointForNotExistCustomerThenNotFound() {
-    whenever(customerRepository.findById(anyLong())).thenReturn(null)
+    whenever(customerRepository.findForUpdateById(anyLong())).thenReturn(null)
 
-    assertThrows(HhpNotFoundException::class.java) { customerService.get(randomId()) }
+    assertThrows(HhpNotFoundException::class.java) { customerService.chargePoint(randomId(), 100) }
   }
 
   @Test
   @DisplayName("포인트를 한도 이상으로 충전하려고 하면 IllegalArgumentException 발생")
   fun chargePointMoreThanMaxThenIllegalArgumentException() {
-    whenever(customerRepository.findById(customer.id)).thenReturn(customer)
+    whenever(customerRepository.findForUpdateById(customer.id)).thenReturn(customer)
 
     assertThrows(IllegalArgumentException::class.java) {
       customerService.chargePoint(customer.id, Int.MAX_VALUE)
@@ -69,7 +69,7 @@ class CustomerServiceTest {
     val before = customer.point
     val amount = 10_000
 
-    whenever(customerRepository.findById(customer.id)).thenReturn(customer)
+    whenever(customerRepository.findForUpdateById(customer.id)).thenReturn(customer)
 
     customerService.chargePoint(customer.id, amount)
 
@@ -79,15 +79,15 @@ class CustomerServiceTest {
   @Test
   @DisplayName("존재하지 않는 유저의 포인트를 사용하려고 할 때 NotFoundException 발생")
   fun usePointForNotExistCustomerThenNotFound() {
-    whenever(customerRepository.findById(anyLong())).thenReturn(null)
+    whenever(customerRepository.findForUpdateById(anyLong())).thenReturn(null)
 
-    assertThrows(HhpNotFoundException::class.java) { customerService.get(randomId()) }
+    assertThrows(HhpNotFoundException::class.java) { customerService.usePoint(randomId(), 100) }
   }
 
   @Test
   @DisplayName("포인트를 잔액 이상으로 사용하려고 하면 IllegalArgumentException 발생")
   fun usePointMoreThanMaxThenIllegalArgumentException() {
-    whenever(customerRepository.findById(customer.id)).thenReturn(customer)
+    whenever(customerRepository.findForUpdateById(customer.id)).thenReturn(customer)
 
     assertThrows(IllegalArgumentException::class.java) {
       customerService.usePoint(customer.id, Int.MAX_VALUE)
@@ -100,7 +100,7 @@ class CustomerServiceTest {
     val before = customer.point
     val amount = 5_000
 
-    whenever(customerRepository.findById(customer.id)).thenReturn(customer)
+    whenever(customerRepository.findForUpdateById(customer.id)).thenReturn(customer)
 
     customerService.usePoint(customer.id, amount)
 

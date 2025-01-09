@@ -1,5 +1,7 @@
-package kr.hhplus.be.server.domain.customer
+package kr.hhplus.be.server.domain.customer.model
 
+import kr.hhplus.be.server.domain.customer.CustomerCoupon
+import kr.hhplus.be.server.domain.customer.CustomerCouponStatus
 import java.time.LocalDate
 import java.time.LocalDateTime
 

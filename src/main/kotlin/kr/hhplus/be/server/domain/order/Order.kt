@@ -72,8 +72,7 @@ class Order(
     status = OrderStatus.CANCELLED
   }
 
-  fun pay(payment: Payment) {
+  fun pay() {
     status = OrderStatus.PAYMENT_COMPLETED
-    this.payment = payment
   }
 }

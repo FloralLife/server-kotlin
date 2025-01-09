@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.domain.order
 
 import kr.hhplus.be.server.domain.order.command.CreateOrderCommand
+import kr.hhplus.be.server.domain.order.model.OrderResult
+import kr.hhplus.be.server.domain.order.model.toResult
 import kr.hhplus.be.server.exception.HhpNotFoundException
 import org.springframework.stereotype.Service
 

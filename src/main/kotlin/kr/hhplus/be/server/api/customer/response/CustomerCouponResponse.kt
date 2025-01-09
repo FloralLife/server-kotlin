@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.api.customer.response
 
-import kr.hhplus.be.server.domain.customer.CustomerCouponResult
+import kr.hhplus.be.server.domain.customer.model.CustomerCouponResult
 import kr.hhplus.be.server.domain.customer.CustomerCouponStatus
 import java.time.LocalDate
 import java.time.LocalDateTime

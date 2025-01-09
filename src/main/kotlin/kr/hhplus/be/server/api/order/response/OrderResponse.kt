@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.api.order.response
 
-import kr.hhplus.be.server.domain.order.OrderResult
+import kr.hhplus.be.server.domain.order.model.OrderResult
 import kr.hhplus.be.server.domain.order.OrderStatus
 import java.time.LocalDateTime
 

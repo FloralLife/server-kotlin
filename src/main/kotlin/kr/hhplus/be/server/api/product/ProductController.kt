@@ -4,19 +4,16 @@ import kr.hhplus.be.server.api.product.request.CreateProductRequest
 import kr.hhplus.be.server.api.product.response.ProductResponse
 import kr.hhplus.be.server.api.product.response.toResponse
 import kr.hhplus.be.server.domain.product.Product
-import kr.hhplus.be.server.domain.product.ProductRepository
 import kr.hhplus.be.server.domain.product.ProductService
-import kr.hhplus.be.server.domain.product.toCommand
+import kr.hhplus.be.server.domain.product.command.toCommand
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/products")

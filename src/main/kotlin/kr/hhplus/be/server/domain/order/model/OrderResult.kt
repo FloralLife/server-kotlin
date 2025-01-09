@@ -1,5 +1,7 @@
-package kr.hhplus.be.server.domain.order
+package kr.hhplus.be.server.domain.order.model
 
+import kr.hhplus.be.server.domain.order.Order
+import kr.hhplus.be.server.domain.order.OrderStatus
 import java.time.LocalDateTime
 
 data class OrderResult(

@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.domain.customer
 
 import kr.hhplus.be.server.domain.coupon.Coupon
+import kr.hhplus.be.server.domain.customer.model.CustomerCouponResult
+import kr.hhplus.be.server.domain.customer.model.toResult
 import kr.hhplus.be.server.exception.HhpNotFoundException
 import org.springframework.stereotype.Service
 import java.time.LocalDate

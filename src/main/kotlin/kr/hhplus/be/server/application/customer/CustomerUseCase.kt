@@ -1,8 +1,7 @@
 package kr.hhplus.be.server.application.customer
 
 import kr.hhplus.be.server.domain.coupon.CouponService
-import kr.hhplus.be.server.domain.customer.CustomerCoupon
-import kr.hhplus.be.server.domain.customer.CustomerCouponResult
+import kr.hhplus.be.server.domain.customer.model.CustomerCouponResult
 import kr.hhplus.be.server.domain.customer.CustomerCouponService
 import kr.hhplus.be.server.domain.customer.CustomerService
 import org.springframework.stereotype.Service
