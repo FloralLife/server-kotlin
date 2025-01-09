@@ -24,12 +24,17 @@ class Payment(
   @JoinColumn(name = "order_id", nullable = false)
   val order: Order,
 
-  val status: PaymentStatus = PaymentStatus.WAITING,
+  var status: PaymentStatus = PaymentStatus.COMPLETED,
 
   val type: PaymentType = PaymentType.POINT,
 
   val price: Int,
+) : BaseEntity() {
+  init {
+    require(price > 0) { "Price must not be negative" }
+  }
 
-  ) : BaseEntity() {
-
+  fun cancel() {
+    status = PaymentStatus.CANCELLED
+  }
 }
