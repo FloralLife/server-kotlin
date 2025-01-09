@@ -17,7 +17,21 @@ class ProductService(
     return productRepository.findAll(pageable)
   }
 
-  fun getAll(ids: List<Long>): List<Product> {
+  fun getAllWithLock(ids: List<Long>): List<Product> {
     return productRepository.findAllForUpdateByIds(ids)
+  }
+
+  fun getAll(ids: List<Long>): List<Product> {
+    return productRepository.findAllByIds(ids)
+  }
+
+  fun create(command: CreateProductCommand): Product {
+    return productRepository.save(
+      Product(
+        name = command.name,
+        price = command.price,
+        stock = command.stock,
+      )
+    )
   }
 }

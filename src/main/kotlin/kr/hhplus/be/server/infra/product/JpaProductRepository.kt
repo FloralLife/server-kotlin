@@ -10,4 +10,5 @@ interface JpaProductRepository : JpaRepository<Product, Long> {
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   fun findAllForUpdateByIdIn(ids: List<Long>): List<Product>
 
+  fun findAllByIdIn(ids: List<Long>): List<Product>
 }

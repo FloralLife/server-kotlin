@@ -16,9 +16,9 @@ import java.time.LocalDateTime
 abstract class BaseEntity {
   @CreatedDate
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  val createdAt: LocalDateTime = LocalDateTime.now()
+  var createdAt: LocalDateTime = LocalDateTime.now()
 
   @LastModifiedDate
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  val updatedAt: LocalDateTime = LocalDateTime.now()
+  var updatedAt: LocalDateTime = LocalDateTime.now()
 }

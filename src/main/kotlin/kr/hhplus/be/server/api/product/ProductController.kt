@@ -1,40 +1,45 @@
 package kr.hhplus.be.server.api.product
 
+import kr.hhplus.be.server.api.product.request.CreateProductRequest
+import kr.hhplus.be.server.api.product.response.ProductResponse
+import kr.hhplus.be.server.api.product.response.toResponse
+import kr.hhplus.be.server.domain.product.Product
+import kr.hhplus.be.server.domain.product.ProductRepository
+import kr.hhplus.be.server.domain.product.ProductService
+import kr.hhplus.be.server.domain.product.toCommand
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/products")
-class ProductController {
-  class Product(
-    val id: Long,
-    var name: String,
-    var stock: Int,
-    val price: Int,
-    val createdAt: LocalDateTime,
-  )
-
-  val product = Product(1L, "맥북", 50, 2_000_000, LocalDateTime.now())
-
-
+class ProductController(
+  private val productService: ProductService
+) {
   @GetMapping("/{productId}")
-  fun get(@PathVariable("productId") productId: Long): Product {
-    check(productId > 0L) { "상품 id는 양수입니다." }
-    require(productId == 1L) { "존재하지 않습니다." }
-    return product
+  fun get(@PathVariable productId: Long): ProductResponse {
+    return productService.get(productId).toResponse()
+  }
+
+  @GetMapping
+  fun getAll(pageable: Pageable): Page<ProductResponse> {
+    return productService.getAll(pageable).map { it.toResponse() }
+  }
+
+  @PostMapping
+  fun create(@RequestBody request: CreateProductRequest): ProductResponse {
+    return productService.create(request.toCommand()).toResponse()
   }
 
   @GetMapping("/top")
   fun getTop() : List<Product> {
-    return listOf(
-      Product(1L, "맥북 m1", 5, 2_000_000, LocalDateTime.now()),
-      Product(2L, "맥북 m2", 2, 2_000_000, LocalDateTime.now()),
-      Product(3L, "맥북 m3", 4, 2_000_000, LocalDateTime.now()),
-      Product(4L, "맥북 m4", 7, 2_000_000, LocalDateTime.now()),
-      Product(5L, "맥북 m5", 4, 2_000_000, LocalDateTime.now())
-    )
+    TODO()
   }
 }

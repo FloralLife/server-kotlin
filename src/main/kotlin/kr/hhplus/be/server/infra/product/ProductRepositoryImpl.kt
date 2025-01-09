@@ -22,4 +22,12 @@ class ProductRepositoryImpl(
   override fun findAllForUpdateByIds(ids: List<Long>): List<Product> {
     return jpaProductRepository.findAllForUpdateByIdIn(ids)
   }
+
+  override fun findAllByIds(ids: List<Long>): List<Product> {
+    return jpaProductRepository.findAllByIdIn(ids)
+  }
+
+  override fun save(product: Product): Product {
+    return jpaProductRepository.save(product)
+  }
 }
