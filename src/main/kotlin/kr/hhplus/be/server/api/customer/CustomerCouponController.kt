@@ -20,12 +20,12 @@ class CustomerCouponController(
 ) {
   @GetMapping
   fun getAll(@PathVariable customerId: Long): List<CustomerCouponResponse> {
-    return customerCouponService.getAll(customerId).map { it.toResponse() }
+    return customerCouponService.getAllResult(customerId).map { it.toResponse() }
   }
 
   @GetMapping("/{customerCouponId}")
   fun get(@PathVariable customerId: Long, @PathVariable customerCouponId: Long): CustomerCouponResponse {
-    return customerCouponService.get(customerCouponId).toResponse()
+    return customerCouponService.getResult(customerCouponId).toResponse()
   }
 
   @PostMapping

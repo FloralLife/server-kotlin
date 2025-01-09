@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.domain.order
 
 import kr.hhplus.be.server.TestUtils.randomId
-import kr.hhplus.be.server.application.order.command.CreateOrderCommand
-import kr.hhplus.be.server.application.order.command.CreateOrderProductCommand
+import kr.hhplus.be.server.domain.order.command.CreateOrderCommand
+import kr.hhplus.be.server.domain.order.command.CreateOrderProductCommand
 import kr.hhplus.be.server.domain.coupon.Coupon
 import kr.hhplus.be.server.domain.customer.Customer
 import kr.hhplus.be.server.domain.customer.CustomerCoupon

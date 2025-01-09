@@ -9,12 +9,16 @@ import java.time.LocalDate
 class CustomerCouponService(
   val customerCouponRepository: CustomerCouponRepository
 ) {
-  fun get(id: Long): CustomerCouponResult {
-    return customerCouponRepository.findById(id)?.toResult()
+  fun get(id: Long): CustomerCoupon {
+    return customerCouponRepository.findById(id)
       ?: throw HhpNotFoundException(id, CustomerCoupon::class.java)
   }
 
-  fun getAll(customerId: Long): List<CustomerCouponResult> {
+  fun getResult(id: Long): CustomerCouponResult {
+    return get(id).toResult()
+  }
+
+  fun getAllResult(customerId: Long): List<CustomerCouponResult> {
     return customerCouponRepository.findAllByCustomerId(customerId).map { it.toResult() }
   }
 
