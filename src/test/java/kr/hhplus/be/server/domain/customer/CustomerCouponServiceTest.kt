@@ -12,6 +12,7 @@ import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -39,11 +40,15 @@ class CustomerCouponServiceTest {
     val customer = Customer(randomId(), 10_000)
     val coupon = Coupon(randomId(), "쿠폰", 10, 10, 7)
 
+    whenever(customerCouponRepository.save(any())).thenAnswer { invocation ->
+      invocation.arguments[0] as CustomerCoupon
+    }
+
     customerCouponService.create(customer, coupon)
 
     verify(customerCouponRepository).save(argThat {
       CustomerCouponStatus.UNUSED == this.status &&
-      LocalDate.now().plusDays(7) == this.expirationDate
+          LocalDate.now().plusDays(7) == this.expirationDate
     })
   }
 }
