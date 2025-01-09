@@ -13,6 +13,10 @@ class CouponRepositoryImpl (
     return jpaCouponRepository.findByIdOrNull(id)
   }
 
+  override fun save(coupon: Coupon): Coupon {
+    return jpaCouponRepository.save(coupon)
+  }
+
   override fun findForUpdateById(id: Long): Coupon? {
     return jpaCouponRepository.findForUpdateById(id)
   }

@@ -12,4 +12,8 @@ class CustomerRepositoryImpl(
   override fun findById(id: Long): Customer? = jpaCustomerRepository.findByIdOrNull(id)
 
   override fun findForUpdateById(id: Long): Customer? = jpaCustomerRepository.findForUpdateById(id)
+
+  override fun save(customer: Customer): Customer {
+    return jpaCustomerRepository.save(customer)
+  }
 }

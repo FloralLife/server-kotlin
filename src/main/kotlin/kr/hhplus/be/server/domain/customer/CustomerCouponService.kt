@@ -9,11 +9,16 @@ import java.time.LocalDate
 class CustomerCouponService(
   val customerCouponRepository: CustomerCouponRepository
 ) {
-  fun get(id: Long): CustomerCoupon {
-    return customerCouponRepository.findById(id) ?: throw HhpNotFoundException(id, CustomerCoupon::class.java)
+  fun get(id: Long): CustomerCouponResult {
+    return customerCouponRepository.findById(id)?.toResult()
+      ?: throw HhpNotFoundException(id, CustomerCoupon::class.java)
   }
 
-  fun create(customer: Customer, coupon: Coupon): CustomerCoupon {
+  fun getAll(customerId: Long): List<CustomerCouponResult> {
+    return customerCouponRepository.findAllByCustomerId(customerId).map { it.toResult() }
+  }
+
+  fun create(customer: Customer, coupon: Coupon): CustomerCouponResult {
     return customerCouponRepository.save(
       CustomerCoupon(
         customer = customer,
@@ -21,6 +26,6 @@ class CustomerCouponService(
         expirationDate = LocalDate.now().plusDays(coupon.expirationPeriod.toLong()),
         usedAt = null
       )
-    )
+    ).toResult()
   }
 }

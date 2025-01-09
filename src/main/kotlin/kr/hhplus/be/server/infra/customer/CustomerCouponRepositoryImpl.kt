@@ -13,6 +13,10 @@ class CustomerCouponRepositoryImpl(
     return jpaCustomerCouponRepository.findByIdOrNull(id)
   }
 
+  override fun findAllByCustomerId(customerId: Long): List<CustomerCoupon> {
+    return jpaCustomerCouponRepository.findAllByCustomerId(customerId)
+  }
+
   override fun save(customerCoupon: CustomerCoupon): CustomerCoupon {
     return jpaCustomerCouponRepository.save(customerCoupon)
   }

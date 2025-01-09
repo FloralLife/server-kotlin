@@ -4,4 +4,6 @@ interface CustomerRepository {
   fun findById(id: Long): Customer?
 
   fun findForUpdateById(id: Long): Customer?
+
+  fun save(customer: Customer): Customer
 }

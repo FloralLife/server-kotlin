@@ -5,6 +5,7 @@ import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
@@ -13,7 +14,10 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "customer_coupon")
+@Table(
+  name = "customer_coupon",
+  indexes = [Index(name = "customer_id_coupon_id", columnList = "customer_id, coupon_id", unique = true)]
+)
 class CustomerCoupon(
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Long = 0L,
