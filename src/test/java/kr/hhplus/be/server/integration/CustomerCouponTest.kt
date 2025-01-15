@@ -47,4 +47,26 @@ class CustomerCouponTest
 
             assertEquals(10, jpaCustomerCouponRepository.findAll().filter { it.coupon.id == 1L }.size)
         }
+
+        @Test
+        @DisplayName("한사람이 여러장의 쿠폰의 발급을 요청해도 한번만 성공한다.")
+        fun issueCustomerCouponOnlyOneForOneUser() {
+            val customer = Customer()
+            jpaCustomerRepository.save(customer)
+
+            val results =
+                List(10) { it }
+                    .parallelStream()
+                    .map {
+                        mockMvc
+                            .post("/api/customers/${customer.id}/coupons") {
+                                contentType = MediaType.APPLICATION_JSON
+                                content = "{ \"couponId\": 1 }"
+                            }.andReturn()
+                            .response.status
+                    }.toList()
+
+            assertEquals(1, results.count { it == 200 })
+            assertEquals(9, results.count { it == 500 })
+        }
     }
