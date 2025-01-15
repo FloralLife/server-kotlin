@@ -25,6 +25,7 @@ interface JpaOrderProductRepository : JpaRepository<OrderProduct, Long> {
       AND pay.createdAt >= :startDate
     GROUP BY op.product.id
     ORDER BY SUM(op.amount) DESC
+    LIMIT 5
   """,
     )
     fun findTop5MostPurchasedProductsInLast3Days(
