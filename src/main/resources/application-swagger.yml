@@ -1,0 +1,29 @@
+# https://springdoc.org/#properties
+springdoc:
+  writer-with-default-pretty-printer: true
+  use-fqn: true
+  swagger-ui:
+    path: /swagger
+    disable-swagger-default-url: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+    ZAAfilter: true
+    enabled: false
+  api-docs:
+    enabled: false
+  override-with-generic-response: false
+
+
+swagger-ui:
+  title: "E-Commerce API"
+  description: "E-Commerce API Docs"
+
+---
+spring:
+  config:
+    activate.on-profile: local, test
+
+springdoc:
+  swagger-ui.enabled: true
+  api-docs.enabled: true
+  override-with-generic-response: false
