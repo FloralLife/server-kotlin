@@ -17,20 +17,20 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 @Table(name = "payment")
 @EntityListeners(AuditingEntityListener::class)
 class Payment(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    val order: Order,
-    var status: PaymentStatus = PaymentStatus.COMPLETED,
-    val type: PaymentType = PaymentType.POINT,
-    val price: Int,
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  val id: Long = 0L,
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "order_id", nullable = false)
+  val order: Order,
+  var status: PaymentStatus = PaymentStatus.COMPLETED,
+  val type: PaymentType = PaymentType.POINT,
+  val price: Int,
 ) : BaseEntity() {
-    init {
-        require(price > 0) { "Price must not be negative" }
-    }
+  init {
+    require(price > 0) { "Price must not be negative" }
+  }
 
-    fun cancel() {
-        status = PaymentStatus.CANCELLED
-    }
+  fun cancel() {
+    status = PaymentStatus.CANCELLED
+  }
 }

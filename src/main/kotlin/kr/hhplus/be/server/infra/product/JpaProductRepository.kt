@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Lock
 
 interface JpaProductRepository : JpaRepository<Product, Long> {
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    fun findAllForUpdateByIdIn(ids: List<Long>): List<Product>
+  @Lock(LockModeType.PESSIMISTIC_WRITE)
+  fun findAllForUpdateByIdIn(ids: List<Long>): List<Product>
 
-    fun findAllByIdIn(ids: List<Long>): List<Product>
+  fun findAllByIdIn(ids: List<Long>): List<Product>
 }

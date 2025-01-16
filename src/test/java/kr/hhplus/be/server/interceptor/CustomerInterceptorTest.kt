@@ -20,48 +20,48 @@ import org.springframework.mock.web.MockHttpServletResponse
 
 @ExtendWith(MockitoExtension::class)
 class CustomerInterceptorTest {
-    @Mock
-    lateinit var customerService: CustomerService
+  @Mock
+  lateinit var customerService: CustomerService
 
-    @InjectMocks
-    lateinit var customerInterceptor: CustomerInterceptor
+  @InjectMocks
+  lateinit var customerInterceptor: CustomerInterceptor
 
-    private lateinit var request: MockHttpServletRequest
-    private lateinit var response: MockHttpServletResponse
+  private lateinit var request: MockHttpServletRequest
+  private lateinit var response: MockHttpServletResponse
 
-    @BeforeEach
-    fun setUp() {
-        request = MockHttpServletRequest()
-        response = MockHttpServletResponse()
+  @BeforeEach
+  fun setUp() {
+    request = MockHttpServletRequest()
+    response = MockHttpServletResponse()
+  }
+
+  @Test
+  @DisplayName("customerId가 헤더에 없을 때 Unauthorized")
+  fun preHandleWithNoHeaderThenUnauthorized() {
+    assertThrows(UnauthorizedException::class.java) {
+      customerInterceptor.preHandle(request, response, Any())
     }
+  }
 
-    @Test
-    @DisplayName("customerId가 헤더에 없을 때 Unauthorized")
-    fun preHandleWithNoHeaderThenUnauthorized() {
-        assertThrows(UnauthorizedException::class.java) {
-            customerInterceptor.preHandle(request, response, Any())
-        }
+  @Test
+  @DisplayName("customerId에 있는 값이 유효하지 않은 ID이면 Unauthorized")
+  fun preHandleWithInvalidCustomerThenUnauthorized() {
+    val customerId = randomId()
+    request.addHeader("customerId", customerId)
+    whenever(customerService.get(customerId)).thenThrow(NotFoundException::class.java)
+
+    assertThrows(UnauthorizedException::class.java) {
+      customerInterceptor.preHandle(request, response, Any())
     }
+  }
 
-    @Test
-    @DisplayName("customerId에 있는 값이 유효하지 않은 ID이면 Unauthorized")
-    fun preHandleWithInvalidCustomerThenUnauthorized() {
-        val customerId = randomId()
-        request.addHeader("customerId", customerId)
-        whenever(customerService.get(customerId)).thenThrow(NotFoundException::class.java)
+  @Test
+  @DisplayName("유효한 customer ID가 헤더이 있으면 true")
+  fun preHandle() {
+    val customerId = randomId()
+    request.addHeader("customerId", customerId)
+    whenever(customerService.get(customerId)).thenReturn(Customer(customerId))
 
-        assertThrows(UnauthorizedException::class.java) {
-            customerInterceptor.preHandle(request, response, Any())
-        }
-    }
-
-    @Test
-    @DisplayName("유효한 customer ID가 헤더이 있으면 true")
-    fun preHandle() {
-        val customerId = randomId()
-        request.addHeader("customerId", customerId)
-        whenever(customerService.get(customerId)).thenReturn(Customer(customerId))
-
-        assertTrue(customerInterceptor.preHandle(request, response, Any()))
-    }
+    assertTrue(customerInterceptor.preHandle(request, response, Any()))
+  }
 }

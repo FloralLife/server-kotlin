@@ -6,20 +6,20 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class CustomerCouponResponse(
-    val id: Long,
-    val customerId: Long,
-    val couponId: Long,
-    val expirationDate: LocalDate,
-    val status: CustomerCouponStatus,
-    val usedAt: LocalDateTime?,
+  val id: Long,
+  val customerId: Long,
+  val couponId: Long,
+  val expirationDate: LocalDate,
+  val status: CustomerCouponStatus,
+  val usedAt: LocalDateTime?,
 )
 
 fun CustomerCouponResult.toResponse() =
-    CustomerCouponResponse(
-        id = this.id,
-        customerId = this.customerId,
-        couponId = this.couponId,
-        expirationDate = this.expirationDate,
-        status = this.status,
-        usedAt = this.usedAt,
-    )
+  CustomerCouponResponse(
+    id = this.id,
+    customerId = this.customerId,
+    couponId = this.couponId,
+    expirationDate = this.expirationDate,
+    status = this.status,
+    usedAt = this.usedAt,
+  )

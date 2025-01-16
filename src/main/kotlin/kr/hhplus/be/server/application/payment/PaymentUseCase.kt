@@ -11,25 +11,25 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PaymentUseCase(
-    private val customerService: CustomerService,
-    private val paymentService: PaymentService,
-    private val orderService: OrderService,
-    private val dataPlatformClient: DataPlatformClient,
+  private val customerService: CustomerService,
+  private val paymentService: PaymentService,
+  private val orderService: OrderService,
+  private val dataPlatformClient: DataPlatformClient,
 ) {
-    @Transactional
-    fun pay(
-        customerId: Long,
-        orderId: Long,
-    ): PaymentResult {
-        val customer = customerService.getWithLock(customerId)
-        val order = orderService.get(orderId)
+  @Transactional
+  fun pay(
+    customerId: Long,
+    orderId: Long,
+  ): PaymentResult {
+    val customer = customerService.getWithLock(customerId)
+    val order = orderService.get(orderId)
 
-        val payment = paymentService.create(order)
+    val payment = paymentService.create(order)
 
-        customer.usePoint(payment.price)
-        order.pay()
+    customer.usePoint(payment.price)
+    order.pay()
 
-        Thread { dataPlatformClient.sendOrder(order) }.start()
-        return payment.toResult()
-    }
+    Thread { dataPlatformClient.sendOrder(order) }.start()
+    return payment.toResult()
+  }
 }

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class CouponRepositoryImpl(
-    private val jpaCouponRepository: JpaCouponRepository,
+  private val jpaCouponRepository: JpaCouponRepository,
 ) : CouponRepository {
-    override fun findById(id: Long): Coupon? = jpaCouponRepository.findByIdOrNull(id)
+  override fun findById(id: Long): Coupon? = jpaCouponRepository.findByIdOrNull(id)
 
-    override fun save(coupon: Coupon): Coupon = jpaCouponRepository.save(coupon)
+  override fun save(coupon: Coupon): Coupon = jpaCouponRepository.save(coupon)
 
-    override fun findForUpdateById(id: Long): Coupon? = jpaCouponRepository.findForUpdateById(id)
+  override fun findForUpdateById(id: Long): Coupon? = jpaCouponRepository.findForUpdateById(id)
 }

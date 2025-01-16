@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component
 
 @Component
 class DataPlatformClient {
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+  private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    fun sendOrder(order: Order) {
-        Thread.sleep(5000)
-        logger.info("Succeed to send order to data platform. id: ${order.id}")
-    }
+  fun sendOrder(order: Order) {
+    Thread.sleep(5000)
+    logger.info("Succeed to send order to data platform. id: ${order.id}")
+  }
 }

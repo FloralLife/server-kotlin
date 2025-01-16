@@ -14,17 +14,17 @@ import org.mockito.kotlin.whenever
 
 @ExtendWith(MockitoExtension::class)
 class ProductServiceTest {
-    @Mock
-    lateinit var productRepository: ProductRepository
+  @Mock
+  lateinit var productRepository: ProductRepository
 
-    @InjectMocks
-    lateinit var productService: ProductService
+  @InjectMocks
+  lateinit var productService: ProductService
 
-    @Test
-    @DisplayName("존재하지 않는 상품 조회시 NotFoundException 발생")
-    fun getThenNotFound() {
-        whenever(productRepository.findById(anyLong())).thenReturn(null)
+  @Test
+  @DisplayName("존재하지 않는 상품 조회시 NotFoundException 발생")
+  fun getThenNotFound() {
+    whenever(productRepository.findById(anyLong())).thenReturn(null)
 
-        assertThrows<NotFoundException> { productService.get(randomId()) }
-    }
+    assertThrows<NotFoundException> { productService.get(randomId()) }
+  }
 }
