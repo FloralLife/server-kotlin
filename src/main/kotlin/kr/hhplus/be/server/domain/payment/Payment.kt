@@ -27,7 +27,7 @@ class Payment(
   val price: Int,
 ) : BaseEntity() {
   init {
-    require(price > 0) { "Price must not be negative" }
+    require(price >= 0) { "Price must not be negative" }
   }
 
   fun cancel() {
