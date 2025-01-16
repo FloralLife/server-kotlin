@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.integration
+package kr.hhplus.be.server.e2e
 
 import kr.hhplus.be.server.domain.customer.Customer
 import kr.hhplus.be.server.domain.product.Product
@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.post
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class OrderTest
+class OrderIntegrationE2ETest
     @Autowired
     constructor(
         val jpaCustomerRepository: JpaCustomerRepository,

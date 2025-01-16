@@ -1,10 +1,14 @@
-package kr.hhplus.be.server.integration
+package kr.hhplus.be.server.e2e
 
 import kr.hhplus.be.server.domain.coupon.Coupon
 import kr.hhplus.be.server.domain.customer.Customer
 import kr.hhplus.be.server.infra.coupon.JpaCouponRepository
 import kr.hhplus.be.server.infra.customer.JpaCustomerCouponRepository
 import kr.hhplus.be.server.infra.customer.JpaCustomerRepository
+import kr.hhplus.be.server.infra.order.JpaOrderProductRepository
+import kr.hhplus.be.server.infra.order.JpaOrderRepository
+import kr.hhplus.be.server.infra.product.JpaProductRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -18,18 +22,33 @@ import org.springframework.test.web.servlet.post
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CustomerCouponTest
+class CustomerCouponE2ETest
     @Autowired
     constructor(
-        val jpaCustomerCouponRepository: JpaCustomerCouponRepository,
-        val jpaCouponRepository: JpaCouponRepository,
         val jpaCustomerRepository: JpaCustomerRepository,
+        val jpaOrderProductRepository: JpaOrderProductRepository,
+        val jpaCustomerCouponRepository: JpaCustomerCouponRepository,
+        var jpaCouponRepository: JpaCouponRepository,
+        val jpaProductRepository: JpaProductRepository,
+        val jpaOrderRepository: JpaOrderRepository,
         val mockMvc: MockMvc,
     ) {
+        lateinit var coupon: Coupon
+
         @BeforeEach
         fun setUp() {
-            val coupon: Coupon = Coupon(0L, "선착순 쿠폰", 10, 10, 30)
+            coupon = Coupon(0L, "선착순 쿠폰", 10, 10, 30)
             jpaCouponRepository.save(coupon)
+        }
+
+        @AfterEach
+        fun cleanup() {
+            jpaOrderProductRepository.deleteAll()
+            jpaCustomerCouponRepository.deleteAll()
+            jpaOrderRepository.deleteAll()
+            jpaCustomerRepository.deleteAll()
+            jpaCouponRepository.deleteAll()
+            jpaProductRepository.deleteAll()
         }
 
         @Test
@@ -41,7 +60,8 @@ class CustomerCouponTest
             users.parallelStream().forEach {
                 mockMvc.post("/api/customers/${it.id}/coupons") {
                     contentType = MediaType.APPLICATION_JSON
-                    content = "{ \"couponId\": 1 }"
+                    content = "{ \"couponId\": ${coupon.id} }"
+                    header("customerId", it.id)
                 }
             }
 
@@ -61,12 +81,13 @@ class CustomerCouponTest
                         mockMvc
                             .post("/api/customers/${customer.id}/coupons") {
                                 contentType = MediaType.APPLICATION_JSON
-                                content = "{ \"couponId\": 1 }"
+                                content = "{ \"couponId\": ${coupon.id} }"
+                                header("customerId", customer.id)
                             }.andReturn()
                             .response.status
                     }.toList()
 
             assertEquals(1, results.count { it == 200 })
-            assertEquals(9, results.count { it == 500 })
+            assertEquals(9, results.count { it == 409 })
         }
     }
