@@ -28,6 +28,16 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         )
     }
 
+    @ExceptionHandler(UnauthorizedException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun handleException(e: UnauthorizedException): ResponseEntity<ErrorResponse> {
+        logger.info(e.message)
+        return ResponseEntity(
+            ErrorResponse("401", "${e.message}"),
+            HttpStatus.UNAUTHORIZED,
+        )
+    }
+
     @ExceptionHandler(NotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleNotFound(e: NotFoundException): ResponseEntity<ErrorResponse> {
