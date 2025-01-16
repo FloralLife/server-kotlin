@@ -20,10 +20,7 @@ import org.springframework.test.web.servlet.post
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class OrderIntegrationE2ETest
-@Autowired
-constructor(
-
+class OrderIntegrationE2ETest @Autowired constructor(
   val jpaCustomerRepository: JpaCustomerRepository,
   val jpaOrderProductRepository: JpaOrderProductRepository,
   val jpaCustomerCouponRepository: JpaCustomerCouponRepository,
