@@ -8,9 +8,13 @@ import org.springframework.transaction.annotation.Transactional
 class CustomerService(
     private val customerRepository: CustomerRepository,
 ) {
-    fun get(id: Long): Customer = customerRepository.findById(id) ?: throw NotFoundException(id, Customer::class.java)
+    fun get(id: Long): Customer =
+        customerRepository.findById(id)
+            ?: throw NotFoundException(id, Customer::class.java)
 
-    fun getWithLock(id: Long): Customer = customerRepository.findForUpdateById(id) ?: throw NotFoundException(id, Customer::class.java)
+    fun getWithLock(id: Long): Customer =
+        customerRepository.findForUpdateById(id)
+            ?: throw NotFoundException(id, Customer::class.java)
 
     fun create(): Customer = customerRepository.save(Customer())
 

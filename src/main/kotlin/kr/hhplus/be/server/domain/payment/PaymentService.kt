@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service
 class PaymentService(
     private val paymentRepository: PaymentRepository,
 ) {
-    fun get(id: Long): Payment = paymentRepository.findById(id) ?: throw NotFoundException(id, Payment::class.java)
+    fun get(id: Long): Payment =
+        paymentRepository.findById(id)
+            ?: throw NotFoundException(id, Payment::class.java)
 
     fun getResult(id: Long): PaymentResult = get(id).toResult()
 

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service
 class ProductService(
     val productRepository: ProductRepository,
 ) {
-    fun get(id: Long): Product = productRepository.findById(id) ?: throw NotFoundException(id, Product::class.java)
+    fun get(id: Long): Product =
+        productRepository.findById(id)
+            ?: throw NotFoundException(id, Product::class.java)
 
     fun getAll(pageable: Pageable): Page<Product> = productRepository.findAll(pageable)
 

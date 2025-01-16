@@ -11,7 +11,9 @@ class OrderService(
     private val orderRepository: OrderRepository,
     private val orderProductRepository: OrderProductRepository,
 ) {
-    fun get(id: Long): Order = orderRepository.findById(id) ?: throw NotFoundException(id, Order::class.java)
+    fun get(id: Long): Order =
+        orderRepository.findById(id)
+            ?: throw NotFoundException(id, Order::class.java)
 
     fun getResult(id: Long): OrderResult = get(id).toResult()
 
