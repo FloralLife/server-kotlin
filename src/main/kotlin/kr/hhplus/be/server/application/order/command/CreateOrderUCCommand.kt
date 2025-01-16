@@ -11,7 +11,7 @@ data class CreateOrderUCCommand(
 ) {
   init {
     val productIds = products.map { it.productId }
-    require (productIds.size == productIds.distinct().size) { "잘못된 요청 형식입니다." }
+    require(productIds.size == productIds.distinct().size) { "잘못된 요청 형식입니다." }
   }
 }
 
