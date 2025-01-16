@@ -8,7 +8,12 @@ data class CreateOrderUCCommand(
   val customerId: Long,
   val customerCouponId: Long?,
   val products: List<CreateOrderProductUCCommand>,
-)
+) {
+  init {
+    val productIds = products.map { it.productId }
+    require (productIds.size == productIds.distinct().size) { "잘못된 요청 형식입니다." }
+  }
+}
 
 data class CreateOrderProductUCCommand(
   val productId: Long,
