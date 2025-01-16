@@ -3,14 +3,14 @@ package kr.hhplus.be.server.domain.payment
 import kr.hhplus.be.server.domain.order.Order
 import kr.hhplus.be.server.domain.payment.model.PaymentResult
 import kr.hhplus.be.server.domain.payment.model.toResult
-import kr.hhplus.be.server.exception.HhpNotFoundException
+import kr.hhplus.be.server.exception.NotFoundException
 import org.springframework.stereotype.Service
 
 @Service
 class PaymentService(
     private val paymentRepository: PaymentRepository,
 ) {
-    fun get(id: Long): Payment = paymentRepository.findById(id) ?: throw HhpNotFoundException(id, Payment::class.java)
+    fun get(id: Long): Payment = paymentRepository.findById(id) ?: throw NotFoundException(id, Payment::class.java)
 
     fun getResult(id: Long): PaymentResult = get(id).toResult()
 

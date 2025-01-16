@@ -6,7 +6,7 @@ import kr.hhplus.be.server.domain.customer.Customer
 import kr.hhplus.be.server.domain.customer.CustomerCoupon
 import kr.hhplus.be.server.domain.customer.CustomerCouponStatus
 import kr.hhplus.be.server.domain.order.Order
-import kr.hhplus.be.server.exception.HhpNotFoundException
+import kr.hhplus.be.server.exception.NotFoundException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
@@ -52,7 +52,7 @@ class PaymentServiceTest {
     fun getPaymentThenNotFound() {
         whenever(paymentRepository.findById(anyLong())).thenReturn(null)
 
-        assertThrows(HhpNotFoundException::class.java) { paymentService.get(randomId()) }
+        assertThrows(NotFoundException::class.java) { paymentService.get(randomId()) }
     }
 
     @Test

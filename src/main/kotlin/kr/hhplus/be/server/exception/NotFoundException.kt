@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.exception
 
-class HhpNotFoundException : RuntimeException {
+class NotFoundException : RuntimeException {
     companion object {
         const val MESSAGE_TEMPLATE = "%s not found. id: %s"
     }

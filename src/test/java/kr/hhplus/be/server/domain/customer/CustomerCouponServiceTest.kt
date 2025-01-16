@@ -2,7 +2,7 @@ package kr.hhplus.be.server.domain.customer
 
 import kr.hhplus.be.server.TestUtils.randomId
 import kr.hhplus.be.server.domain.coupon.Coupon
-import kr.hhplus.be.server.exception.HhpNotFoundException
+import kr.hhplus.be.server.exception.NotFoundException
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -30,7 +30,7 @@ class CustomerCouponServiceTest {
     fun getThenNotFound() {
         whenever(customerCouponRepository.findById(anyLong())).thenReturn(null)
 
-        assertThrows(HhpNotFoundException::class.java) { customerCouponService.get(randomId()) }
+        assertThrows(NotFoundException::class.java) { customerCouponService.get(randomId()) }
     }
 
     @Test

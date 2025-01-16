@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.domain.customer
 
-import kr.hhplus.be.server.exception.HhpNotFoundException
+import kr.hhplus.be.server.exception.NotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional
 class CustomerService(
     private val customerRepository: CustomerRepository,
 ) {
-    fun get(id: Long): Customer = customerRepository.findById(id) ?: throw HhpNotFoundException(id, Customer::class.java)
+    fun get(id: Long): Customer = customerRepository.findById(id) ?: throw NotFoundException(id, Customer::class.java)
 
-    fun getWithLock(id: Long): Customer = customerRepository.findForUpdateById(id) ?: throw HhpNotFoundException(id, Customer::class.java)
+    fun getWithLock(id: Long): Customer = customerRepository.findForUpdateById(id) ?: throw NotFoundException(id, Customer::class.java)
 
     fun create(): Customer = customerRepository.save(Customer())
 
