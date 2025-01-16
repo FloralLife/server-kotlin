@@ -8,7 +8,6 @@ import kr.hhplus.be.server.infra.customer.JpaCustomerRepository
 import kr.hhplus.be.server.infra.order.JpaOrderProductRepository
 import kr.hhplus.be.server.infra.order.JpaOrderRepository
 import kr.hhplus.be.server.infra.product.JpaProductRepository
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -37,19 +36,17 @@ constructor(
 
   @BeforeEach
   fun setUp() {
-    coupon = Coupon(0L, "선착순 쿠폰", 10, 10, 30)
-    jpaCouponRepository.save(coupon)
-  }
-
-  @AfterEach
-  fun cleanup() {
     jpaOrderProductRepository.deleteAll()
     jpaCustomerCouponRepository.deleteAll()
     jpaOrderRepository.deleteAll()
     jpaCustomerRepository.deleteAll()
     jpaCouponRepository.deleteAll()
     jpaProductRepository.deleteAll()
+
+    coupon = Coupon(0L, "선착순 쿠폰", 10, 10, 30)
+    jpaCouponRepository.save(coupon)
   }
+
 
   @Test
   @DisplayName("동시에 다수의 사람이 쿠폰을 발급받아도 정해진 재고만큼 발급된다.")
@@ -65,7 +62,7 @@ constructor(
       }
     }
 
-    assertEquals(10, jpaCustomerCouponRepository.findAll().filter { it.coupon.id == 1L }.size)
+    assertEquals(10, jpaCustomerCouponRepository.findAll().filter { it.coupon.id == coupon.id }.size)
   }
 
   @Test
