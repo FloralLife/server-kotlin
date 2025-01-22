@@ -7,11 +7,11 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class PaymentRepositoryImpl(
-    private val jpaPaymentRepository: JpaPaymentRepository,
+  private val jpaPaymentRepository: JpaPaymentRepository,
 ) : PaymentRepository {
-    override fun findById(id: Long): Payment? = jpaPaymentRepository.findByIdOrNull(id)
+  override fun findById(id: Long): Payment? = jpaPaymentRepository.findByIdOrNull(id)
 
-    override fun findByOrderId(orderId: Long): Payment? = jpaPaymentRepository.findByOrderId(orderId)
+  override fun findByOrderId(orderId: Long): Payment? = jpaPaymentRepository.findByOrderId(orderId)
 
-    override fun save(payment: Payment): Payment = jpaPaymentRepository.save(payment)
+  override fun save(payment: Payment): Payment = jpaPaymentRepository.save(payment)
 }

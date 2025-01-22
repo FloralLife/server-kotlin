@@ -11,11 +11,11 @@ import java.time.LocalDateTime
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity {
-    @CreatedDate
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    var createdAt: LocalDateTime = LocalDateTime.now()
+  @CreatedDate
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  var createdAt: LocalDateTime = LocalDateTime.now()
 
-    @LastModifiedDate
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    var updatedAt: LocalDateTime = LocalDateTime.now()
+  @LastModifiedDate
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+  var updatedAt: LocalDateTime = LocalDateTime.now()
 }

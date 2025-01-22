@@ -9,17 +9,18 @@ import java.time.LocalDateTime
 
 @Repository
 class OrderProductRepositoryImpl(
-    private val jpaOrderProductRepository: JpaOrderProductRepository,
+  private val jpaOrderProductRepository: JpaOrderProductRepository,
 ) : OrderProductRepository {
-    override fun findByOrderId(
-        orderId: Long,
-        pageable: Pageable,
-    ): Page<OrderProduct> = jpaOrderProductRepository.findAllByOrderId(orderId, pageable)
+  override fun findByOrderId(
+    orderId: Long,
+    pageable: Pageable,
+  ): Page<OrderProduct> = jpaOrderProductRepository.findAllByOrderId(orderId, pageable)
 
-    override fun saveAll(orderProducts: List<OrderProduct>): List<OrderProduct> = jpaOrderProductRepository.saveAll(orderProducts)
+  override fun saveAll(orderProducts: List<OrderProduct>): List<OrderProduct> =
+    jpaOrderProductRepository.saveAll(orderProducts)
 
-    override fun findTop5MostPurchasedProductsInLast3Days(): List<Long> =
-        jpaOrderProductRepository.findTop5MostPurchasedProductsInLast3Days(
-            startDate = LocalDateTime.now().minusDays(3),
-        )
+  override fun findTop5MostPurchasedProductsInLast3Days(): List<Long> =
+    jpaOrderProductRepository.findTop5MostPurchasedProductsInLast3Days(
+      startDate = LocalDateTime.now().minusDays(3),
+    )
 }

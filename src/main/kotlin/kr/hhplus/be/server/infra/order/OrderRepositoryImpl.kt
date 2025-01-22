@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class OrderRepositoryImpl(
-    private val jpaOrderRepository: JpaOrderRepository,
+  private val jpaOrderRepository: JpaOrderRepository,
 ) : OrderRepository {
-    override fun findById(id: Long): Order? = jpaOrderRepository.findByIdOrNull(id)
+  override fun findById(id: Long): Order? = jpaOrderRepository.findByIdOrNull(id)
 
-    override fun findByCustomerId(
-        customerId: Long,
-        pageable: Pageable,
-    ): Page<Order> = jpaOrderRepository.findByCustomerId(customerId, pageable)
+  override fun findByCustomerId(
+    customerId: Long,
+    pageable: Pageable,
+  ): Page<Order> = jpaOrderRepository.findByCustomerId(customerId, pageable)
 
-    override fun save(order: Order): Order = jpaOrderRepository.save(order)
+  override fun save(order: Order): Order = jpaOrderRepository.save(order)
 }
