@@ -1,8 +1,9 @@
 ## 프로젝트
 
-
 ## Swagger
 ![swagger.png](img/swagger.png)
+
+---
 
 ## 주요 기능 코드
 ### 주문 / 결제
@@ -15,6 +16,8 @@
 ### 쿠폰
 - 선착순 쿠폰 발급시 Coupon에만 락을 걸어 재고가 없는데 발급되는 경우를 방지합니다.
 - 한 유저가 여러개의 쿠폰을 발급받는 경우는 customer_id_coupon_id 인덱스를 unique = true로 생성하여 방지합니다.
+
+---
 
 ## Getting Started
 
@@ -69,4 +72,4 @@ docker-compose up -d
 
 ---
 
-
+## [동시성 제어](docs/concurrency.md)
