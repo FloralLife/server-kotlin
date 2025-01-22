@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.domain.customer
 
 import kr.hhplus.be.server.TestUtils.randomId
-import kr.hhplus.be.server.exception.HhpNotFoundException
+import kr.hhplus.be.server.exception.NotFoundException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -34,7 +34,7 @@ class CustomerServiceTest {
     fun getUserThenNotFound() {
         whenever(customerRepository.findById(anyLong())).thenReturn(null)
 
-        assertThrows(HhpNotFoundException::class.java) { customerService.get(randomId()) }
+        assertThrows(NotFoundException::class.java) { customerService.get(randomId()) }
     }
 
     @Test
@@ -42,7 +42,7 @@ class CustomerServiceTest {
     fun getUserForUpdateThenNotFound() {
         whenever(customerRepository.findForUpdateById(anyLong())).thenReturn(null)
 
-        assertThrows(HhpNotFoundException::class.java) { customerService.getWithLock(randomId()) }
+        assertThrows(NotFoundException::class.java) { customerService.getWithLock(randomId()) }
     }
 
     @Test
@@ -50,7 +50,7 @@ class CustomerServiceTest {
     fun chargePointForNotExistCustomerThenNotFound() {
         whenever(customerRepository.findForUpdateById(anyLong())).thenReturn(null)
 
-        assertThrows(HhpNotFoundException::class.java) { customerService.chargePoint(randomId(), 100) }
+        assertThrows(NotFoundException::class.java) { customerService.chargePoint(randomId(), 100) }
     }
 
     @Test
@@ -81,7 +81,7 @@ class CustomerServiceTest {
     fun usePointForNotExistCustomerThenNotFound() {
         whenever(customerRepository.findForUpdateById(anyLong())).thenReturn(null)
 
-        assertThrows(HhpNotFoundException::class.java) { customerService.usePoint(randomId(), 100) }
+        assertThrows(NotFoundException::class.java) { customerService.usePoint(randomId(), 100) }
     }
 
     @Test

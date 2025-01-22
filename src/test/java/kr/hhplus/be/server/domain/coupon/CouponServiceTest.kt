@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.domain.coupon
 
 import kr.hhplus.be.server.TestUtils.randomId
-import kr.hhplus.be.server.exception.HhpNotFoundException
+import kr.hhplus.be.server.exception.NotFoundException
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -25,7 +25,7 @@ class CouponServiceTest {
     fun getUserThenNotFound() {
         whenever(couponRepository.findById(anyLong())).thenReturn(null)
 
-        assertThrows(HhpNotFoundException::class.java) { couponService.get(randomId()) }
+        assertThrows(NotFoundException::class.java) { couponService.get(randomId()) }
     }
 
     @Test
@@ -33,6 +33,6 @@ class CouponServiceTest {
     fun getUserWithLockThenNotFound() {
         whenever(couponRepository.findForUpdateById(anyLong())).thenReturn(null)
 
-        assertThrows(HhpNotFoundException::class.java) { couponService.getWithLock(randomId()) }
+        assertThrows(NotFoundException::class.java) { couponService.getWithLock(randomId()) }
     }
 }

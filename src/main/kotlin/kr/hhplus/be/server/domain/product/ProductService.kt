@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.domain.product
 
 import kr.hhplus.be.server.domain.product.command.CreateProductCommand
-import kr.hhplus.be.server.exception.HhpNotFoundException
+import kr.hhplus.be.server.exception.NotFoundException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service
 class ProductService(
     val productRepository: ProductRepository,
 ) {
-    fun get(id: Long): Product = productRepository.findById(id) ?: throw HhpNotFoundException(id, Product::class.java)
+    fun get(id: Long): Product =
+        productRepository.findById(id)
+            ?: throw NotFoundException(id, Product::class.java)
 
     fun getAll(pageable: Pageable): Page<Product> = productRepository.findAll(pageable)
 

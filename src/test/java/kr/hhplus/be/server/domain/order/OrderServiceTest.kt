@@ -8,7 +8,7 @@ import kr.hhplus.be.server.domain.customer.CustomerCouponStatus
 import kr.hhplus.be.server.domain.order.command.CreateOrderCommand
 import kr.hhplus.be.server.domain.order.command.CreateOrderProductCommand
 import kr.hhplus.be.server.domain.product.Product
-import kr.hhplus.be.server.exception.HhpNotFoundException
+import kr.hhplus.be.server.exception.NotFoundException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
@@ -47,7 +47,7 @@ class OrderServiceTest {
     fun getOrderThenNotFound() {
         whenever(orderRepository.findById(anyLong())).thenReturn(null)
 
-        assertThrows(HhpNotFoundException::class.java) { orderService.get(randomId()) }
+        assertThrows(NotFoundException::class.java) { orderService.get(randomId()) }
     }
 
     @Test

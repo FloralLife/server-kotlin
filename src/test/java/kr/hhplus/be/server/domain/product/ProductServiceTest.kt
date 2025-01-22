@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.domain.product
 
 import kr.hhplus.be.server.TestUtils.randomId
-import kr.hhplus.be.server.exception.HhpNotFoundException
+import kr.hhplus.be.server.exception.NotFoundException
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -25,6 +25,6 @@ class ProductServiceTest {
     fun getThenNotFound() {
         whenever(productRepository.findById(anyLong())).thenReturn(null)
 
-        assertThrows<HhpNotFoundException> { productService.get(randomId()) }
+        assertThrows<NotFoundException> { productService.get(randomId()) }
     }
 }
