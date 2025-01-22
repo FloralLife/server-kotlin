@@ -8,24 +8,40 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductService(
-    val productRepository: ProductRepository,
+  val productRepository: ProductRepository,
 ) {
-    fun get(id: Long): Product =
-        productRepository.findById(id)
-            ?: throw NotFoundException(id, Product::class.java)
+  fun get(id: Long): Product =
+    productRepository.findById(id)
+      ?: throw NotFoundException(id, Product::class.java)
 
-    fun getAll(pageable: Pageable): Page<Product> = productRepository.findAll(pageable)
+  fun getAll(pageable: Pageable): Page<Product> = productRepository.findAll(pageable)
 
-    fun getAllWithLock(ids: List<Long>): List<Product> = productRepository.findAllForUpdateByIds(ids)
+  fun getAllWithLock(ids: List<Long>): List<Product> {
+    val products = productRepository.findAllForUpdateByIds(ids)
+    validateAllExists(ids, products)
+    return products
+  }
 
-    fun getAll(ids: List<Long>): List<Product> = productRepository.findAllByIds(ids)
+  fun getAll(ids: List<Long>): List<Product> {
+    val products = productRepository.findAllByIds(ids)
+    validateAllExists(ids, products)
+    return products
+  }
 
-    fun create(command: CreateProductCommand): Product =
-        productRepository.save(
-            Product(
-                name = command.name,
-                price = command.price,
-                stock = command.stock,
-            ),
-        )
+  fun create(command: CreateProductCommand): Product =
+    productRepository.save(
+      Product(
+        name = command.name,
+        price = command.price,
+        stock = command.stock,
+      ),
+    )
+
+  fun validateAllExists(ids: List<Long>, products: List<Product>) {
+    val foundProductIds = products.map { it.id }.toSet()
+    val notExistProductIds = ids - foundProductIds
+    if (notExistProductIds.isNotEmpty()) {
+      throw NotFoundException("상품이 존재하지 않습니다.: $notExistProductIds")
+    }
+  }
 }

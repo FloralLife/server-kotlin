@@ -9,18 +9,18 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CustomerUseCase(
-    private val couponService: CouponService,
-    private val customerService: CustomerService,
-    private val customerCouponService: CustomerCouponService,
+  private val couponService: CouponService,
+  private val customerService: CustomerService,
+  private val customerCouponService: CustomerCouponService,
 ) {
-    @Transactional
-    fun issueCoupon(
-        customerId: Long,
-        couponId: Long,
-    ): CustomerCouponResult {
-        val customer = customerService.get(customerId)
-        val coupon = couponService.getWithLock(couponId)
-        coupon.issue()
-        return customerCouponService.create(customer, coupon)
-    }
+  @Transactional
+  fun issueCoupon(
+    customerId: Long,
+    couponId: Long,
+  ): CustomerCouponResult {
+    val customer = customerService.get(customerId)
+    val coupon = couponService.getWithLock(couponId)
+    coupon.issue()
+    return customerCouponService.create(customer, coupon)
+  }
 }

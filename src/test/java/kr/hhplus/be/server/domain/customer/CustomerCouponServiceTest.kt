@@ -19,37 +19,37 @@ import java.time.LocalDate
 
 @ExtendWith(MockitoExtension::class)
 class CustomerCouponServiceTest {
-    @Mock
-    lateinit var customerCouponRepository: CustomerCouponRepository
+  @Mock
+  lateinit var customerCouponRepository: CustomerCouponRepository
 
-    @InjectMocks
-    lateinit var customerCouponService: CustomerCouponService
+  @InjectMocks
+  lateinit var customerCouponService: CustomerCouponService
 
-    @Test
-    @DisplayName("존재하지 않는 유저 쿠폰 조회시 NotFoundException")
-    fun getThenNotFound() {
-        whenever(customerCouponRepository.findById(anyLong())).thenReturn(null)
+  @Test
+  @DisplayName("존재하지 않는 유저 쿠폰 조회시 NotFoundException")
+  fun getThenNotFound() {
+    whenever(customerCouponRepository.findById(anyLong())).thenReturn(null)
 
-        assertThrows(NotFoundException::class.java) { customerCouponService.get(randomId()) }
+    assertThrows(NotFoundException::class.java) { customerCouponService.get(randomId()) }
+  }
+
+  @Test
+  @DisplayName("쿠폰 생성시 유저, 쿠폰정보가 저장됨")
+  fun create() {
+    val customer = Customer(randomId(), 10_000)
+    val coupon = Coupon(randomId(), "쿠폰", 10, 10, 7)
+
+    whenever(customerCouponRepository.save(any())).thenAnswer { invocation ->
+      invocation.arguments[0] as CustomerCoupon
     }
 
-    @Test
-    @DisplayName("쿠폰 생성시 유저, 쿠폰정보가 저장됨")
-    fun create() {
-        val customer = Customer(randomId(), 10_000)
-        val coupon = Coupon(randomId(), "쿠폰", 10, 10, 7)
+    customerCouponService.create(customer, coupon)
 
-        whenever(customerCouponRepository.save(any())).thenAnswer { invocation ->
-            invocation.arguments[0] as CustomerCoupon
-        }
-
-        customerCouponService.create(customer, coupon)
-
-        verify(customerCouponRepository).save(
-            argThat {
-                CustomerCouponStatus.UNUSED == this.status &&
-                    LocalDate.now().plusDays(7) == this.expirationDate
-            },
-        )
-    }
+    verify(customerCouponRepository).save(
+      argThat {
+        CustomerCouponStatus.UNUSED == this.status &&
+            LocalDate.now().plusDays(7) == this.expirationDate
+      },
+    )
+  }
 }

@@ -18,22 +18,23 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/products")
 class ProductController(
-    private val productService: ProductService,
-    private val productUseCase: ProductUseCase,
+  private val productService: ProductService,
+  private val productUseCase: ProductUseCase,
 ) {
-    @GetMapping("/{productId}")
-    fun get(
-        @PathVariable productId: Long,
-    ): ProductResponse = productService.get(productId).toResponse()
+  @GetMapping("/{productId}")
+  fun get(
+    @PathVariable productId: Long,
+  ): ProductResponse = productService.get(productId).toResponse()
 
-    @GetMapping
-    fun getAll(pageable: Pageable): Page<ProductResponse> = productService.getAll(pageable).map { it.toResponse() }
+  @GetMapping
+  fun getAll(pageable: Pageable): Page<ProductResponse> =
+    productService.getAll(pageable).map { it.toResponse() }
 
-    @PostMapping
-    fun create(
-        @RequestBody request: CreateProductRequest,
-    ): ProductResponse = productService.create(request.toCommand()).toResponse()
+  @PostMapping
+  fun create(
+    @RequestBody request: CreateProductRequest,
+  ): ProductResponse = productService.create(request.toCommand()).toResponse()
 
-    @GetMapping("/top")
-    fun getTop(): List<ProductResponse> = productUseCase.top5For3Days().map { it.toResponse() }
+  @GetMapping("/top")
+  fun getTop(): List<ProductResponse> = productUseCase.top5For3Days().map { it.toResponse() }
 }

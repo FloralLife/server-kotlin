@@ -15,43 +15,43 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class OrderUseCase(
-    private val customerService: CustomerService,
-    private val customerCouponService: CustomerCouponService,
-    private val couponService: CouponService,
-    private val productService: ProductService,
-    private val orderService: OrderService,
+  private val customerService: CustomerService,
+  private val customerCouponService: CustomerCouponService,
+  private val couponService: CouponService,
+  private val productService: ProductService,
+  private val orderService: OrderService,
 ) {
-    @Transactional
-    fun order(command: CreateOrderUCCommand): OrderResult {
-        val customer = customerService.getWithLock(command.customerId)
+  @Transactional
+  fun order(command: CreateOrderUCCommand): OrderResult {
+    val customer = customerService.getWithLock(command.customerId)
 
-        val (customerCoupon, discountRate) =
-            command.customerCouponId?.let {
-                customerCouponService.get(it).let { coupon ->
-                    coupon to couponService.get(coupon.coupon.id).discountRate
-                }
-            } ?: (null to 0)
+    val (customerCoupon, discountRate) =
+      command.customerCouponId?.let {
+        customerCouponService.get(it).let { coupon ->
+          coupon to couponService.get(coupon.coupon.id).discountRate
+        }
+      } ?: (null to 0)
 
-        customerCoupon?.use()
+    customerCoupon?.use()
 
-        val products = productService.getAllWithLock(command.products.map { it.productId })
-        val orderProducts = products.associateBy { it.id }
-        val orderProductCommands =
-            command.products.map { CreateOrderProductCommand(orderProducts[it.productId]!!, it.amount) }
+    val products = productService.getAllWithLock(command.products.map { it.productId })
+    val orderProducts = products.associateBy { it.id }
+    val orderProductCommands =
+      command.products.map { CreateOrderProductCommand(orderProducts[it.productId]!!, it.amount) }
 
-        val order =
-            orderService.create(
-                CreateOrderCommand(
-                    address = command.address,
-                    customer = customer,
-                    customerCoupon = customerCoupon,
-                    discountRate = discountRate,
-                    products = orderProductCommands,
-                ),
-            )
+    val order =
+      orderService.create(
+        CreateOrderCommand(
+          address = command.address,
+          customer = customer,
+          customerCoupon = customerCoupon,
+          discountRate = discountRate,
+          products = orderProductCommands,
+        ),
+      )
 
-        order.products.forEach { it.product.purchase(it.amount) }
+    order.products.forEach { it.product.purchase(it.amount) }
 
-        return order.toResult()
-    }
+    return order.toResult()
+  }
 }
