@@ -9,6 +9,7 @@ import jakarta.persistence.Index
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import jakarta.persistence.Version
 import kr.hhplus.be.server.domain.coupon.Coupon
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -30,12 +31,14 @@ class CustomerCoupon(
   val expirationDate: LocalDate,
   var status: CustomerCouponStatus = CustomerCouponStatus.UNUSED,
   var usedAt: LocalDateTime?,
+  @Version
+  var version: Long = 0L
 ) {
   fun isExpired(): Boolean = expirationDate.isBefore(LocalDate.now())
 
   fun use() {
-    require(status == CustomerCouponStatus.UNUSED) { "This CustomerCoupon is already used" }
-    require(!isExpired()) { "This CustomerCoupon is expired" }
+    require(status == CustomerCouponStatus.UNUSED) { "이미 사용된 쿠폰입니다." }
+    require(!isExpired()) { "만료된 쿠폰입니다." }
 
     status = CustomerCouponStatus.USED
     usedAt = LocalDateTime.now()
