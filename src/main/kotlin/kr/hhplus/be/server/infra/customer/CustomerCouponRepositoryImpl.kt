@@ -14,6 +14,6 @@ class CustomerCouponRepositoryImpl(
   override fun findAllByCustomerId(customerId: Long): List<CustomerCoupon> =
     jpaCustomerCouponRepository.findAllByCustomerId(customerId)
 
-  override fun save(customerCoupon: CustomerCoupon): CustomerCoupon =
-    jpaCustomerCouponRepository.save(customerCoupon)
+  override fun saveAndFlush(customerCoupon: CustomerCoupon): CustomerCoupon =
+    jpaCustomerCouponRepository.saveAndFlush(customerCoupon)
 }

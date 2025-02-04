@@ -5,5 +5,5 @@ interface CustomerCouponRepository {
 
   fun findAllByCustomerId(customerId: Long): List<CustomerCoupon>
 
-  fun save(customerCoupon: CustomerCoupon): CustomerCoupon
+  fun saveAndFlush(customerCoupon: CustomerCoupon): CustomerCoupon
 }

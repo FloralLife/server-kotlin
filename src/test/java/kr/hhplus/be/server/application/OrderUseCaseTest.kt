@@ -163,7 +163,7 @@ class OrderUseCaseTest @Autowired constructor(
     val result = orderUseCase.order(orderCommand)
 
     val resultCustomerCoupon = jpaCustomerCouponRepository.findById(result.customerCouponId!!).get()
-    val resultProduct = jpaProductRepository.findById(result.products[0].productId!!).get()
+    val resultProduct = jpaProductRepository.findById(result.products[0].productId).get()
 
     assertEquals(50000, result.totalPrice)
     assertEquals(5000, result.discountPrice)

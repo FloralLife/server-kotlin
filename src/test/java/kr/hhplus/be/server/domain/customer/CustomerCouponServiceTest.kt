@@ -39,13 +39,13 @@ class CustomerCouponServiceTest {
     val customer = Customer(randomId(), 10_000)
     val coupon = Coupon(randomId(), "쿠폰", 10, 10, 7)
 
-    whenever(customerCouponRepository.save(any())).thenAnswer { invocation ->
+    whenever(customerCouponRepository.saveAndFlush(any())).thenAnswer { invocation ->
       invocation.arguments[0] as CustomerCoupon
     }
 
     customerCouponService.create(customer, coupon)
 
-    verify(customerCouponRepository).save(
+    verify(customerCouponRepository).saveAndFlush(
       argThat {
         CustomerCouponStatus.UNUSED == this.status &&
             LocalDate.now().plusDays(7) == this.expirationDate
