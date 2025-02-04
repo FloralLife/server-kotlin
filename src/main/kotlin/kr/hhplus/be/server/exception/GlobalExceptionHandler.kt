@@ -82,7 +82,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
   @ExceptionHandler(Exception::class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
-    logger.error(e.message)
+    logger.error(e.message, e)
     return ResponseEntity(
       ErrorResponse("500", "${e.message}"),
       HttpStatus.INTERNAL_SERVER_ERROR,

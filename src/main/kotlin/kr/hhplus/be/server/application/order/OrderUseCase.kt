@@ -23,7 +23,7 @@ class OrderUseCase(
 ) {
   @Transactional
   fun order(command: CreateOrderUCCommand): OrderResult {
-    val customer = customerService.getWithLock(command.customerId)
+    val customer = customerService.get(command.customerId)
 
     val (customerCoupon, discountRate) =
       command.customerCouponId?.let {
@@ -32,7 +32,9 @@ class OrderUseCase(
         }
       } ?: (null to 0)
 
-    customerCoupon?.use()
+    if (customerCoupon != null) {
+      customerCouponService.use(customerCoupon)
+    }
 
     val products = productService.getAllWithLock(command.products.map { it.productId })
     val orderProducts = products.associateBy { it.id }
