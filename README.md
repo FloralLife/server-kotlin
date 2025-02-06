@@ -75,3 +75,5 @@ docker-compose up -d
 ### [동시성 제어](docs/concurrency.md)
 
 ### [Cache 정리](docs/cache.md)
+
+### [Redis를 이용한 성능 개선 보고서](docs/redis.md)
