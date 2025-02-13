@@ -18,18 +18,17 @@ interface JpaOrderProductRepository : JpaRepository<OrderProduct, Long> {
   @Query(
     """
     SELECT op.product.id
-    FROM OrderProduct op
-    JOIN op.order o
-    JOIN o.payment pay
-    WHERE pay.status = :paymentStatus
-      AND pay.createdAt >= :startDate
+    FROM Payment p, OrderProduct op
+    WHERE p.order.id = op.order.id
+      AND p.createdAt >= :startDate
+      AND p.status = :status
     GROUP BY op.product.id
     ORDER BY SUM(op.amount) DESC
     LIMIT 5
   """,
   )
   fun findTop5MostPurchasedProductsInLast3Days(
-    @Param("paymentStatus") paymentStatus: PaymentStatus = PaymentStatus.COMPLETED,
-    @Param("startDate") startDate: LocalDateTime,
+    status: PaymentStatus = PaymentStatus.COMPLETED,
+    startDate: LocalDateTime,
   ): List<Long>
 }
