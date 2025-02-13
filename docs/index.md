@@ -85,10 +85,46 @@ LIMIT 5
   - order_id로 JOIN
   - product_id로 GROUP BY
   - amount로 SUM & ORDER BY
+- 다른 쿼리에서도 사용되는 컬럼
 
 ### 개선방법
 - `payment` 에 `created_at`, `status` 복합인덱스로 필터링 속도 향상
-  - status는 결제 완료 / 결제 취소 상태밖에 없고 대부분이 결제 완료 상태이기 때문에 카디널리티가 매우 높다. 따라서 앞쪽에 두는것이 큰 의미가 없다고 판단했습니다.
+  - `status`는 결제 완료 / 결제 취소 상태밖에 없고 대부분이 결제 완료 상태이기 때문에 카디널리티가 매우 낮다. 따라서 앞쪽에 두는것이 큰 의미가 없다고 판단
 - `payment`의 위의 인덱스에 `order_id`까지 인덱스에 포함시키는 커버링 인덱스로 생성
 - `order_product` 에서 `order_id`로 JOIN 이후에 `product_id`로 group by 를 수행하므로 `order_id`, `product_id` 복합인덱스 생성
 - `amount` 까지 포함시키는 커버링 인덱스로 생성
+- 이 쿼리에서 사용되는 조건들은 다른 기능쪽에선 거의 사용되지 않을 것으로 보이기 때문에 이 인덱스는 인기상품 조회만을 위한 인덱스이다.
+
+### 개선결과
+#### Explain
+![query-explain.png](query-explain.png)
+key 에 `payment` 에서는 `idx_created_at_status_order_id`, `order_product` 에서는 `idx_order_id_product_id, amount` 인덱스를 타는것을 확인했다.
+
+#### 실행
+```
+[2025-02-14 01:39:58] 5 rows retrieved starting from 1 in 1 s 836 ms (execution: 1 s 492 ms, fetching: 344 ms)
+
+[2025-02-14 01:39:59] 5 rows retrieved starting from 1 in 1 s 165 ms (execution: 972 ms, fetching: 193 ms)
+
+[2025-02-14 01:40:00] 5 rows retrieved starting from 1 in 927 ms (execution: 767 ms, fetching: 160 ms)
+
+[2025-02-14 01:40:01] 5 rows retrieved starting from 1 in 920 ms (execution: 746 ms, fetching: 174 ms)
+
+[2025-02-14 01:40:02] 5 rows retrieved starting from 1 in 911 ms (execution: 750 ms, fetching: 161 ms)
+
+[2025-02-14 01:40:03] 5 rows retrieved starting from 1 in 903 ms (execution: 838 ms, fetching: 65 ms)
+
+[2025-02-14 01:40:04] 5 rows retrieved starting from 1 in 912 ms (execution: 729 ms, fetching: 183 ms)
+
+[2025-02-14 01:40:05] 5 rows retrieved starting from 1 in 905 ms (execution: 843 ms, fetching: 62 ms)
+
+[2025-02-14 01:40:06] 5 rows retrieved starting from 1 in 960 ms (execution: 727 ms, fetching: 233 ms)
+
+[2025-02-14 01:40:07] 5 rows retrieved starting from 1 in 898 ms (execution: 703 ms, fetching: 195 ms)
+
+[2025-02-14 01:40:07] 5 rows retrieved starting from 1 in 919 ms (execution: 743 ms, fetching: 176 ms)
+
+[2025-02-14 01:40:08] 5 rows retrieved starting from 1 in 920 ms (execution: 807 ms, fetching: 113 ms)
+```
+
+평균 소요시간 1014.7 ms 로 속도가 향상된 것을 확인하였다. 
