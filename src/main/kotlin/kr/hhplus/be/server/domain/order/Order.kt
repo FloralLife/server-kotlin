@@ -2,6 +2,8 @@ package kr.hhplus.be.server.domain.order
 
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -22,6 +24,7 @@ import kr.hhplus.be.server.domain.payment.Payment
 class Order(
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Long = 0L,
+  @Enumerated(EnumType.STRING)
   var status: OrderStatus = OrderStatus.PAYMENT_WAITING,
   var address: String,
   var totalPrice: Int = 0,

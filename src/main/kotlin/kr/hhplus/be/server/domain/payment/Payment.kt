@@ -2,6 +2,8 @@ package kr.hhplus.be.server.domain.payment
 
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -22,7 +24,9 @@ class Payment(
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "order_id", nullable = false)
   val order: Order,
+  @Enumerated(EnumType.STRING)
   var status: PaymentStatus = PaymentStatus.COMPLETED,
+  @Enumerated(EnumType.STRING)
   val type: PaymentType = PaymentType.POINT,
   val price: Int,
 ) : BaseEntity() {
