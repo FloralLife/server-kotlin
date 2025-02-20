@@ -35,7 +35,7 @@ class KafkaConsumerConfig {
   @Bean
   fun kafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, PaymentCompleteEvent> {
     val factory = ConcurrentKafkaListenerContainerFactory<String, PaymentCompleteEvent>()
-
+    factory.isBatchListener = false
     factory.consumerFactory = consumerFactory()
     return factory
   }
