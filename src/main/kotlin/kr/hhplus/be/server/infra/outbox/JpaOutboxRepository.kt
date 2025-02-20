@@ -5,5 +5,5 @@ import kr.hhplus.be.server.domain.outbox.OutboxStatus
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface JpaOutboxRepository : JpaRepository<OutboxEntity, Long> {
-  fun findAllByStatus(status: OutboxStatus): List<OutboxEntity>
+  fun findAllByEventTypeAndStatus(eventType: String, status: OutboxStatus): List<OutboxEntity>
 }

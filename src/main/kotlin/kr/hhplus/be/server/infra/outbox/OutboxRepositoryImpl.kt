@@ -13,8 +13,8 @@ class OutboxRepositoryImpl(
     return jpaOutboxRepository.findById(id).orElse(null)
   }
 
-  override fun findAllByStatus(status: OutboxStatus): List<OutboxEntity> {
-    return jpaOutboxRepository.findAllByStatus(status)
+  override fun findAllByEventTypeAndStatus(eventType: String, status: OutboxStatus): List<OutboxEntity> {
+    return jpaOutboxRepository.findAllByEventTypeAndStatus(eventType, status)
   }
 
   override fun save(outbox: OutboxEntity): OutboxEntity {
