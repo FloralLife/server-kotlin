@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.application
 
+import com.sun.net.httpserver.Authenticator.Success
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import kr.hhplus.be.server.TestUtils.randomId
@@ -7,9 +8,11 @@ import kr.hhplus.be.server.application.payment.PaymentUseCase
 import kr.hhplus.be.server.domain.customer.Customer
 import kr.hhplus.be.server.domain.order.Order
 import kr.hhplus.be.server.domain.order.OrderStatus
+import kr.hhplus.be.server.domain.outbox.OutboxStatus
 import kr.hhplus.be.server.exception.NotFoundException
 import kr.hhplus.be.server.infra.customer.JpaCustomerRepository
 import kr.hhplus.be.server.infra.order.JpaOrderRepository
+import kr.hhplus.be.server.infra.outbox.JpaOutboxRepository
 import kr.hhplus.be.server.infra.payment.JpaPaymentRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -28,6 +31,7 @@ class PaymentUseCaseTest @Autowired constructor(
   private val jpaPaymentRepository: JpaPaymentRepository,
   private val paymentUseCase: PaymentUseCase,
   private val jdbcTemplate: JdbcTemplate,
+  private val jpaOutboxRepository: JpaOutboxRepository
 ) {
   @PersistenceContext
   private lateinit var entityManager: EntityManager
@@ -42,6 +46,7 @@ class PaymentUseCaseTest @Autowired constructor(
     jdbcTemplate.update("DELETE FROM payment")
     jdbcTemplate.update("DELETE FROM `order`")
     jdbcTemplate.update("DELETE FROM customer")
+    jdbcTemplate.update("DELETE FROM outbox")
 
     customer = jpaCustomerRepository.save(Customer(point = 100_000))
     order = jpaOrderRepository.save(
@@ -87,9 +92,18 @@ class PaymentUseCaseTest @Autowired constructor(
 
     val resultCustomer = jpaCustomerRepository.findById(customer.id).get()
     val resultOrder = jpaOrderRepository.findById(order.id).get()
+    val outbox = jpaOutboxRepository.findAll()
 
     assertEquals(result.id, resultOrder.payment!!.id)
     assertEquals(55_000, resultCustomer.point)
     assertEquals(OrderStatus.PAYMENT_COMPLETED, resultOrder.status)
+
+    assertEquals(1, outbox.size)
+    assertEquals(OutboxStatus.PENDING, outbox.first().status)
+
+    Thread.sleep(15000)
+
+    val outbox2 = jpaOutboxRepository.findAll().first()
+    assertEquals(OutboxStatus.SUCCESS, outbox2.status)
   }
 }

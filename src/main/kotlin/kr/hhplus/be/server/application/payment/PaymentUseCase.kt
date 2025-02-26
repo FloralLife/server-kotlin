@@ -1,11 +1,12 @@
 package kr.hhplus.be.server.application.payment
 
-import kr.hhplus.be.server.api.DataPlatformClient
+import kr.hhplus.be.server.application.payment.event.toEvent
 import kr.hhplus.be.server.domain.customer.CustomerService
 import kr.hhplus.be.server.domain.order.OrderService
 import kr.hhplus.be.server.domain.payment.PaymentService
 import kr.hhplus.be.server.domain.payment.model.PaymentResult
 import kr.hhplus.be.server.domain.payment.model.toResult
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,7 +15,7 @@ class PaymentUseCase(
   private val customerService: CustomerService,
   private val paymentService: PaymentService,
   private val orderService: OrderService,
-  private val dataPlatformClient: DataPlatformClient,
+  private val eventPublisher: ApplicationEventPublisher
 ) {
   @Transactional
   fun pay(
@@ -29,7 +30,7 @@ class PaymentUseCase(
     customer.usePoint(payment.price)
     order.pay()
 
-    Thread { dataPlatformClient.sendOrder(order) }.start()
+    eventPublisher.publishEvent(payment.toEvent())
     return payment.toResult()
   }
 }
